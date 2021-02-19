@@ -2,13 +2,16 @@ import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
 import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,
-    AppBar,Toolbar,IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography} from '@material-ui/core';
+    AppBar,Toolbar,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,
+    IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography} from '@material-ui/core';
 
-import {Facebook , Save,YouTube,AssignmentInd, People} from '@material-ui/icons/';
+
+
+import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd, People} from '@material-ui/icons/';
 import MenuIcon from '@material-ui/icons/Menu';
-import  Link from 'next/link';
 
 import fire from '../config/fire-config';
+import  Link from 'next/link';
 
 const PrivatePage = ({ user }) => {
   const [blogs, setBlogs] = useState([]);
@@ -115,43 +118,17 @@ useEffect(() => {
 
   }
 
-  class InfosAtuais extends Component {
-    render(){
-      if(canal == "youtube"){
-        return(
-          <div >
-              
-              <Typography variant="h6" className={classes.title}>
-                  Informações atuais da NSLIVE
-                </Typography>
-              
-               <YouTubeIcon color="secondary" style={{fontSize:"7rem",height:"55%"}}/>
-               <Typography variant="h6" className={classes.title}>URL ATUAL: {urlAtual}</Typography>
-               <Button onClick={handleOpen} color="inherit">Alterar</Button>
-
-          </div>
-    
-    
-        )
-
-      }else if(canal == "youtube"){
-        return(
-          <div>
-              <h1 >Informações atuais da NSLIVE</h1>
-              <h4>{urlAtual}</h4>
-              <Icon color="primary" style={{fontSize:"10rem"}}>facebook</Icon>
-
-          </div>
-        
-    
-        )
-
-      }else{
-        return (<div></div>);
-      }
-   }
-
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
   }
+  
+  const rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+    createData('Cupcake', 305, 3.7, 67, 4.3),
+    createData('Gingerbread', 356, 16.0, 49, 3.9),
+  ];
   
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -174,7 +151,7 @@ useEffect(() => {
 
 
     <AppBar position="static">
-  <Toolbar>
+    <Toolbar>
     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
       <MenuIcon />
     </IconButton>
@@ -189,27 +166,59 @@ useEffect(() => {
     <Button color="inherit">sair</Button>
   </Toolbar>
 </AppBar>
-          <Grid container spacing={3}>  
-              <Grid item xs={12}></Grid>
-              <Grid item xs={12}></Grid>
-              <Grid item xs={3}></Grid>
-
-              <Grid item xs={3}>
-                <Link href="/filiados">
-                  <Button  style={{paddingRight:"0"}} variant="contained" color="primary">
-                       <People style={{padding:"0", marginLeft:"-18%" ,fontSize:"100px"}}/>
-                        <h4 style={{margin:"55% 0 0 -50%"}}> Filiados </h4>
-                  </Button>
-                  </Link>
-                 
+        
+          <Grid container spacing={2}>  
+              <Grid item xs={12} ></Grid>
+                    
+              <Grid item xs={12} sm={2}></Grid>
+              <Grid item xs={12} sm={3}>
+               <Typography variant="h5"> FILIADOS ao SINDIFPM</Typography>
               </Grid>
-              <Grid item xs={3}>
-                <Link href="/usuarios">
-                  <Button  style={{paddingRight:"0"}} variant="contained" color="primary">
-                       <AssignmentInd style={{padding:"0", marginLeft:"-18%" ,fontSize:"100px"}}/>
-                        <h4 style={{margin:"55% 0 0 -50%"}}> Usuários </h4>
-                  </Button>
+              <Grid item xs={12} sm={1}></Grid>
+              <Grid item xs={12} sm={2}></Grid>
+              <Grid item xs={12} sm={2}></Grid>
+              
+              <Grid item xs={12} sm={2}>
+                 <Link href="/addfiliado">
+                   <Button color="primary">
+                       <GroupAdd />
+                       <Typography variant="h6"> filiado</Typography>
+                    </Button>
                   </Link>
+              </Grid>
+              
+           
+              <Grid item xs={12}></Grid>
+
+              <Grid item xs={2} spacing={0}></Grid>
+
+              <Grid item xs={6} spacing={2}>
+                <TableContainer component={Paper}>
+                  <Table className={classes.table} size="small" aria-label="a dense table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Dessert (100g serving)</TableCell>
+                        <TableCell align="right">Calories</TableCell>
+                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows.map((row) => (
+                        <TableRow key={row.name}>
+                          <TableCell component="th" scope="row">
+                            {row.name}
+                          </TableCell>
+                          <TableCell align="right">{row.calories}</TableCell>
+                          <TableCell align="right">{row.fat}</TableCell>
+                          <TableCell align="right">{row.carbs}</TableCell>
+                          <TableCell align="right">{row.protein}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
 
 

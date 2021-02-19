@@ -1,6 +1,6 @@
 import  Link2 from 'next/link';
 
-import fire from '../../config/fire-config';
+import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
 import React, { useState} from 'react';
@@ -13,8 +13,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="#">
+        SINDIFPM - SGC
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -52,14 +52,14 @@ const handlerSubmit = async (e) => {
   fire.auth().signInWithEmailAndPassword(email, password)
   .then(async(e) => {
 
-    const response = await fetch("../api/sessions", {
+    const response = await fetch("api/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     });
     console.log(response);
     if (response.ok) {
-      return router.push("/Controle");
+      return router.push("/");
     }
 
   })

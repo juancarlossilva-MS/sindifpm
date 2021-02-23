@@ -179,10 +179,10 @@ useEffect(() => {
               <Grid item xs={12} sm={2}></Grid>
               
               <Grid item xs={12} sm={2}>
-                 <Link href="/addfiliado">
+                 <Link href="/addusuario">
                    <Button color="primary">
                        <GroupAdd />
-                       <Typography variant="h6"> filiado</Typography>
+                       <Typography variant="h6"> usuario</Typography>
                     </Button>
                   </Link>
               </Grid>

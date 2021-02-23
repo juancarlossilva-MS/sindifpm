@@ -84,40 +84,6 @@ useEffect(() => {
     
   }
 
-  class AbrirModalChangeServer extends Component {
-      render(){
-
-          return(
-              <div>
-                <Modal
-                      open={open}
-                      onClose={handleClose}
-                     
-                    >
-                     <div style={modalStyle}  className={classes2.paper}>
-                            <h2 id="simple-modal-title">Selecione a Plataforma</h2>
-                            <FormControl component="fieldset">
-                              <FormLabel component="legend">Plataforma</FormLabel>
-                              <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-                                <FormControlLabel value="youtube" control={<Radio />} label={<YouTubeIcon/>} />
-                                <FormControlLabel value="facebook" control={<Radio />} label={<FacebookIcon/>} />
-                              
-                              </RadioGroup>
-                              <TextField id="outlined-basic" label="URL" variant="outlined" />
-                              <Button variant="contained" onClick={salvarNovasInfos} color="primary" size="small" className={classes.button} startIcon={<SaveIcon />}>
-                                  Save
-                                </Button>
-                            </FormControl>
-                          </div>
-                    </Modal>
-              </div>
-
-          )
-
-      }
-
-  }
-
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }

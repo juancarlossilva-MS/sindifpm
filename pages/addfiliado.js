@@ -97,6 +97,81 @@ useEffect(() => {
 
 }
 
+class AddDependentes extends Component {
+  render(){
+    if(open){
+    return(
+          <div>
+          
+            
+              <Grid item >
+               <Typography variant="h5"> Adicionar Filiado</Typography>
+              </Grid>
+             
+
+              <Grid item > <TextField required   variant="outlined" id="nome" label="Nome" defaultValue="" /></Grid>
+              <Grid item > <TextField required  variant="outlined"  id="sobrenome" label="Sobrenome" defaultValue="" /></Grid>
+
+              <Grid item > 
+              <TextField
+                variant="outlined" 
+                      id="date"
+                      label="Data de Nascimento"
+                      type="date"
+                      defaultValue="2017-05-24"
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+              </Grid>
+
+           
+              <Grid item > <TextField required id="funcao"  variant="outlined"  label="Função" defaultValue="" /></Grid>
+              <Grid item > 
+              <TextField
+                      id="admissao"
+                      label="Data de Admissão"
+                      variant="outlined" 
+                      type="date"
+                      defaultValue="2017-05-24"
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+              </Grid>
+              <Grid item > 
+              <TextField
+                      id="validade"
+                      label="Validade da Carteira"
+                      type="date"
+                      variant="outlined" 
+                      defaultValue="2017-05-24"
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+              </Grid>
+            
+           
+
+          </div>
+
+    );
+  }else{
+    return(<div></div>);
+
+
+
+  }
+
+  }
+
+
+}
+
 
   function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -159,7 +234,7 @@ useEffect(() => {
   };
 
   
-  const classes = useStyles();
+ const classes = useStyles();
 
     return(
   <div>
@@ -184,7 +259,7 @@ useEffect(() => {
   </Toolbar>
 </AppBar>
         
-          <Grid container spacing={2}>  
+          <Grid container  alignItems="center" spacing={2}>  
               <Grid item xs={12} ></Grid>
                     
               <Grid item xs={12} sm={3}></Grid>
@@ -270,14 +345,14 @@ useEffect(() => {
                <Typography variant="h5"> Dependentes</Typography>
               </Grid>
               <Grid item xs={12} sm={1} >
-                 <Link href="/addfiliado">
-                   <Button color="primary">
+                
+                   <Button onClick={handleOpen} color="primary">
                        <GroupAdd />
                        <Typography variant="h6"> dependente</Typography>
                     </Button>
-                  </Link>
+                 
               </Grid>
-
+              <Grid item xs={12} sm={3}  ><AddDependentes/> </Grid>
               <Grid item xs={12} sm={3}  ></Grid>
               <Grid item xs={12} sm={3}  ></Grid>
               <Grid item xs={12} sm={6}  >   <TabelaDependentes/></Grid>

@@ -1,13 +1,13 @@
 import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
-import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,
+import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,Fade,Zoom,
     AppBar,Toolbar,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,
     IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography} from '@material-ui/core';
 
 
 
-import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd, People} from '@material-ui/icons/';
+import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd,Cancel, People} from '@material-ui/icons/';
 
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -97,67 +97,99 @@ useEffect(() => {
 
 }
 
+class HeadDep extends Component {
+  render(){
+    if(open){
+      return(
+        
+
+        <Grid container  alignItems="center" spacing={2}>  
+
+          <Grid item xs={12} sm={4} >
+           <Typography variant="h5"> Adicionar Dependentes</Typography>
+          </Grid>
+          <Grid item xs={12} sm={1} >
+            
+               <Button onClick={handleChange} color="primary">
+                   <Cancel />
+                   <Typography variant="h6"> cancelar</Typography>
+                </Button>
+             
+          </Grid> 
+          
+        </Grid>
+
+      );
+    }else{
+      return(
+      
+
+          <Grid container  alignItems="center" spacing={2}>  
+
+            <Grid item xs={12} sm={4} >
+            <Typography variant="h5"> Dependentes</Typography>
+            </Grid>
+            <Grid item xs={12} sm={1} >
+              
+                <Button onClick={handleChange} color="primary">
+                    <GroupAdd />
+                    <Typography variant="h6"> dependente</Typography>
+                  </Button>
+              
+            </Grid> 
+            
+          </Grid>
+      
+      
+        );
+
+
+
+    }
+
+  }
+
+
+}
+
 class AddDependentes extends Component {
   render(){
     if(open){
     return(
-          <div>
-          
-            
-              <Grid item >
-               <Typography variant="h5"> Adicionar Filiado</Typography>
-              </Grid>
-             
+      <Zoom in={open}>
+      <Paper elevation={3} style={{maxWidth:"60%"}}>
+      <Grid container  alignItems="center" spacing={4}>  
+                
+          <Grid item xs={12} sm={4}> <TextField required   variant="outlined" id="nomeComp" label="Nome Completo" defaultValue="" /></Grid>
+          <Grid item xs={12} sm={4}> <TextField required  variant="outlined"  id="parentesco" label="Grau de Parentesco" defaultValue="" /></Grid>
 
-              <Grid item > <TextField required   variant="outlined" id="nome" label="Nome" defaultValue="" /></Grid>
-              <Grid item > <TextField required  variant="outlined"  id="sobrenome" label="Sobrenome" defaultValue="" /></Grid>
-
-              <Grid item > 
-              <TextField
-                variant="outlined" 
-                      id="date"
-                      label="Data de Nascimento"
-                      type="date"
-                      defaultValue="2017-05-24"
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-              </Grid>
-
-           
-              <Grid item > <TextField required id="funcao"  variant="outlined"  label="Função" defaultValue="" /></Grid>
-              <Grid item > 
-              <TextField
-                      id="admissao"
-                      label="Data de Admissão"
-                      variant="outlined" 
-                      type="date"
-                      defaultValue="2017-05-24"
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-              </Grid>
-              <Grid item > 
-              <TextField
-                      id="validade"
-                      label="Validade da Carteira"
-                      type="date"
-                      variant="outlined" 
-                      defaultValue="2017-05-24"
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-              </Grid>
-            
-           
-
-          </div>
+          <Grid item xs={12} sm={4}> 
+          <TextField
+            variant="outlined" 
+                  id="date"
+                  label="Data de Nascimento"
+                  type="date"
+                  defaultValue="2017-05-24"
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+          </Grid>
+         
+          <Grid item xs={12}  sm={4}> <TextField required id="funcao"  variant="outlined"  label="RG" defaultValue="" /></Grid>
+          <Grid item xs={12}  sm={4}> <TextField required id="cpf"  variant="outlined" label="CPF" defaultValue="" /></Grid>
+          <Grid item xs={12}  sm={4}> 
+              <Button style={{color:"green"}}>
+                          <Save />
+                          <Typography variant="h6"> confirmar</Typography>
+                </Button>          
+          </Grid>
+         
+          </Grid>
+     
+     </Paper> 
+     </Zoom> 
 
     );
   }else{
@@ -204,7 +236,10 @@ class AddDependentes extends Component {
 
   const [value, setValue] = React.useState('female');
 
-  const handleChange = (event) => {
+  const handleChange = () => {
+    setOpen((prev)=>!prev);
+  };
+  const handleChange2 = (event) => {
     setValue(event.target.value);
   };
 
@@ -237,7 +272,8 @@ class AddDependentes extends Component {
  const classes = useStyles();
 
     return(
-  <div>
+  <div style={{overflow:"auto"}}>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link>
 
@@ -258,23 +294,17 @@ class AddDependentes extends Component {
     <Button color="inherit">sair</Button>
   </Toolbar>
 </AppBar>
-        
+          <div style={{margin:"3% 0 0 25%"}}>
+        <Paper elevation={3} style={{maxWidth:"60%"}}>
           <Grid container  alignItems="center" spacing={2}>  
-              <Grid item xs={12} ></Grid>
-                    
-              <Grid item xs={12} sm={3}></Grid>
-              <Grid item xs={12} sm={3}>
-               <Typography variant="h5"> Adicionar Filiado</Typography>
+             
+          <Grid item xs={12}> <Typography variant="h5"> Adicionar Filiado</Typography>
               </Grid>
-              <Grid item xs={12} sm={6}></Grid>
-              <Grid item xs={12}></Grid> {/*like a broken line*/}
+            
+              <Grid item xs={12} sm={4}> <TextField required   variant="outlined" id="nome" label="Nome" defaultValue="" /></Grid>
+              <Grid item xs={12} sm={4}> <TextField required  variant="outlined"  id="sobrenome" label="Sobrenome" defaultValue="" /></Grid>
 
-              <Grid item xs={3}  ></Grid>
-
-              <Grid item xs={6}  sm={2}> <TextField required   variant="outlined" id="nome" label="Nome" defaultValue="" /></Grid>
-              <Grid item xs={6}  sm={2}> <TextField required  variant="outlined"  id="sobrenome" label="Sobrenome" defaultValue="" /></Grid>
-
-              <Grid item xs={6}  sm={2}> 
+              <Grid item xs={12} sm={4}> 
               <TextField
                 variant="outlined" 
                       id="date"
@@ -287,16 +317,9 @@ class AddDependentes extends Component {
                       }}
                     />
               </Grid>
-
-            
-              <Grid item xs={3}  ></Grid>
-
-              <Grid item xs={12}></Grid> 
-
-              <Grid item xs={3}  ></Grid>
-
-              <Grid item xs={6}  sm={2}> <TextField required id="funcao"  variant="outlined"  label="Função" defaultValue="" /></Grid>
-              <Grid item xs={6}  sm={2}> 
+             
+              <Grid item xs={12}  sm={4}> <TextField required id="funcao"  variant="outlined"  label="Função" defaultValue="" /></Grid>
+              <Grid item xs={12}  sm={4}> 
               <TextField
                       id="admissao"
                       label="Data de Admissão"
@@ -309,7 +332,7 @@ class AddDependentes extends Component {
                       }}
                     />
               </Grid>
-              <Grid item xs={6}  sm={2}> 
+              <Grid item xs={12}  sm={4}> 
               <TextField
                       id="validade"
                       label="Validade da Carteira"
@@ -322,50 +345,34 @@ class AddDependentes extends Component {
                       }}
                     />
               </Grid>
+             
+              <Grid item xs={12}  sm={4}> <TextField required id="nomePai"  variant="outlined"  label="Nome do Pai" defaultValue="" /></Grid>
+              <Grid item xs={12}  sm={4}> <TextField required id="nomeMar"  variant="outlined" label="Nome da Mãe" defaultValue="" /></Grid>
+              <Grid item xs={12}  sm={4}> <TextField required id="rg" label="RG"  variant="outlined" type="number" defaultValue="" /></Grid>
             
-              <Grid item xs={3}  ></Grid>
-
-              <Grid item xs={3}  ></Grid>
-
-              <Grid item xs={6}  sm={2}> <TextField required id="nomePai"  variant="outlined"  label="Nome do Pai" defaultValue="" /></Grid>
-              <Grid item xs={6}  sm={2}> <TextField required id="nomeMar"  variant="outlined" label="Nome da Mãe" defaultValue="" /></Grid>
-              <Grid item xs={6}  sm={2}> <TextField required id="rg" label="RG"  variant="outlined" type="number" defaultValue="" /></Grid>
-              <Grid item xs={3}  ></Grid>
 
 
-              <Grid item xs={3}  ></Grid>
 
-              <Grid item xs={6}  sm={2}> <TextField required id="cpf"  variant="outlined" label="CPF" defaultValue="" /></Grid>
-              <Grid item xs={6}  sm={1}> <TextField required id="numSocio"  variant="outlined" label="Carteira Nº" defaultValue="" /></Grid>
-              <Grid item xs={3}  ></Grid>
-
-              <Grid item xs={12} sm={3}></Grid>
-              <Grid item xs={12} sm={3}></Grid>
-              <Grid item xs={12} sm={4} >
-               <Typography variant="h5"> Dependentes</Typography>
+              <Grid item xs={12}  sm={4}> <TextField required id="cpf"  variant="outlined" label="CPF" defaultValue="" /></Grid>
+              <Grid item xs={12}  sm={2}> <TextField required id="numSocio"  variant="outlined" label="Carteira Nº" defaultValue="" /></Grid>
+             
+            </Grid>
+         </Paper>  
+              <HeadDep/>
+              <AddDependentes/> 
+          <Grid container  alignItems="center" style={{marginTop:"5%"}} spacing={2}>  
+              <Grid item xs={12} sm={6} >   <TabelaDependentes/></Grid>
               </Grid>
-              <Grid item xs={12} sm={1} >
-                
-                   <Button onClick={handleOpen} color="primary">
-                       <GroupAdd />
-                       <Typography variant="h6"> dependente</Typography>
-                    </Button>
-                 
-              </Grid>
-              <Grid item xs={12} sm={3}  ><AddDependentes/> </Grid>
-              <Grid item xs={12} sm={3}  ></Grid>
-              <Grid item xs={12} sm={3}  ></Grid>
-              <Grid item xs={12} sm={6}  >   <TabelaDependentes/></Grid>
-              <Grid item xs={12} sm={8}  ></Grid>
+           
               <Grid item xs={12} sm={4}  >  
               <Button style={{color:"green"}}>
                        <Save />
                        <Typography variant="h6"> salvar</Typography>
                 </Button>          
                 </Grid>
+          
               
-              
-          </Grid>
+              </div>
 
        
 

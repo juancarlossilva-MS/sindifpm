@@ -168,7 +168,11 @@ useEffect(() => {
   const classes = useStyles();
 
     return(
+   
+
   <div>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
+
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link>
 
@@ -189,12 +193,10 @@ useEffect(() => {
     <Button color="inherit">sair</Button>
   </Toolbar>
 </AppBar>
+<div style={{margin:"3% 0 0 25%"}}>
           <Grid container spacing={3}>  
-              <Grid item xs={12}></Grid>
-              <Grid item xs={12}></Grid>
-              <Grid item xs={3}></Grid>
-
-              <Grid item xs={3}>
+             
+              <Grid item xs={12} lg={3}>
                 <Link href="/filiados">
                   <Button  style={{paddingRight:"0"}} variant="contained" color="primary">
                        <People style={{padding:"0", marginLeft:"-18%" ,fontSize:"100px"}}/>
@@ -203,7 +205,7 @@ useEffect(() => {
                   </Link>
                  
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={12} lg={3}>
                 <Link href="/usuarios">
                   <Button  style={{paddingRight:"0"}} variant="contained" color="primary">
                        <AssignmentInd style={{padding:"0", marginLeft:"-18%" ,fontSize:"100px"}}/>
@@ -215,7 +217,7 @@ useEffect(() => {
 
 
           </Grid>
-
+</div>
           
   </div>);
 };

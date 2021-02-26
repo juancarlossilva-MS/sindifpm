@@ -62,7 +62,7 @@ useEffect(() => {
     render(){
 
         return(
-            <div>
+            <div  style={{maxWidth:"100%"}}>
             <TableContainer component={Paper}>
                   <Table className={classes.table} size="small" aria-label="a dense table">
                     <TableHead>
@@ -157,7 +157,7 @@ class AddDependentes extends Component {
     if(open){
     return(
       <Zoom in={open}>
-      <Paper elevation={3} style={{maxWidth:"60%"}}>
+      <Paper elevation={3} style={{maxWidth:"100%"}}>
       <Grid container  alignItems="center" spacing={4}>  
                 
           <Grid item xs={12} sm={4}> <TextField required   variant="outlined" id="nomeComp" label="Nome Completo" defaultValue="" /></Grid>
@@ -294,9 +294,9 @@ class AddDependentes extends Component {
     <Button color="inherit">sair</Button>
   </Toolbar>
 </AppBar>
-          <div style={{margin:"3% 0 0 25%"}}>
-        <Paper elevation={3} style={{maxWidth:"60%"}}>
-          <Grid container  alignItems="center" spacing={2}>  
+          <div style={{margin:"3% 0 0 5%"}}>
+        <Paper elevation={3} style={{maxWidth:"60%",padding:"1%"}}>
+          <Grid container  alignItems="flex-start" spacing={2}>  
              
           <Grid item xs={12}> <Typography variant="h5"> Adicionar Filiado</Typography>
               </Grid>
@@ -357,7 +357,7 @@ class AddDependentes extends Component {
               <Grid item xs={12}  sm={2}> <TextField required id="numSocio"  variant="outlined" label="Carteira Nº" defaultValue="" /></Grid>
              
             </Grid>
-         </Paper>  
+                      
               <HeadDep/>
               <AddDependentes/> 
           <Grid container  alignItems="center" style={{marginTop:"5%"}} spacing={2}>  
@@ -371,10 +371,10 @@ class AddDependentes extends Component {
                 </Button>          
                 </Grid>
           
-              
+                  </Paper>  
               </div>
 
-       
+    
 
           
   </div>);

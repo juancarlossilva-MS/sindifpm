@@ -29,7 +29,7 @@ const PrivatePage = ({ user }) => {
   };
 useEffect(() => {
     fire.database()
-      .ref('infoAtual')
+      .ref('filiados')
       .once("value").then((snap) => {
         
         /*const blogs = snap.docs.map(doc => ({
@@ -38,9 +38,7 @@ useEffect(() => {
         }));*/
         console.log('here');
         var res = (snap.val())
-        setCanal(res.canal);
-        setUrlAtual(res.url);
-      
+        console.log(res);
        // setBlogs(blogs);
       });
   }, []);

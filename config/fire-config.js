@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBuWUnihjrh6PyQObRYu2KhirWQCkWsgAI",
-  authDomain: "nslive-f6c80.firebaseapp.com",
-  projectId: "nslive-f6c80",
-  storageBucket: "nslive-f6c80.appspot.com",
-  messagingSenderId: "1014412450577",
-  appId: "1:1014412450577:web:1434e7a82f45a37322cab0"
+  apiKey: "AIzaSyDDLAq4vBb2OleUzu9dKRcGsWZDRWM8gus",
+  authDomain: "sindifpm-344e0.firebaseapp.com",
+  projectId: "sindifpm-344e0",
+  storageBucket: "sindifpm-344e0.appspot.com",
+  messagingSenderId: "212401093772",
+  appId: "1:212401093772:web:7ce698b6d0eae771accfa9"
 };
 
 try {

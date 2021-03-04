@@ -7,6 +7,7 @@ import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,Inp
 import {Facebook , Save,YouTube,AssignmentInd, People} from '@material-ui/icons/';
 import MenuIcon from '@material-ui/icons/Menu';
 import  Link from 'next/link';
+import Header from "./components/Header";
 
 import fire from '../config/fire-config';
 
@@ -176,24 +177,8 @@ useEffect(() => {
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link>
 
-
-    <AppBar position="static">
-  <Toolbar>
-    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-      <MenuIcon />
-    </IconButton>
-    <Link href="/">
-      <Button color="inherit">
-      <Typography variant="h6" className={classes.title}>
-        SINDIFPM
-      </Typography>
-      </Button>
-    </Link>
-    <h6 style={{marginLeft: '79%'}}>{user.email}</h6>
-    <Button color="inherit">sair</Button>
-  </Toolbar>
-</AppBar>
-<div style={{margin:"3% 0 0 25%"}}>
+<Header/>
+<div style={{margin:"5% 0 0 25%"}}>
           <Grid container spacing={3}>  
              
               <Grid item xs={12} lg={3}>

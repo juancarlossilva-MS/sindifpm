@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import AppBarCollapse from "./AppBarCollapse";
+import  Link from 'next/link';
 
 const styles = {
   root: {
@@ -36,13 +37,13 @@ function Header(props) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography
+        <Link href="/"><a style={{color:'white', textDecoration:"none"}}><Typography
           variant="h6"
           color="inherit"
           className={classes.appTitle}
         >
-          SINDIFPM
-        </Typography>
+          SINDIFPM 
+        </Typography></a></Link>
         <AppBarCollapse />
       </Toolbar>
     </AppBar>

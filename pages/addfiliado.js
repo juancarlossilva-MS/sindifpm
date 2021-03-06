@@ -16,8 +16,7 @@ import  Link from 'next/link';
 
 const PrivatePage = ({ user }) => {
   const [blogs, setBlogs] = useState([]);
-  const [urlAtual, setUrlAtual] = useState("");
-  const [canal, setCanal] = useState("");
+
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -68,10 +67,10 @@ useEffect(() => {
                           <TableCell component="th" scope="row">
                             {row.nomeComp}
                           </TableCell>
-                          <TableCell align="right">{row.paren}</TableCell>
-                          <TableCell align="right">{row.datanasc}</TableCell>
-                          <TableCell align="right">{row.rg}</TableCell>
-                          <TableCell align="right">{row.cpf}</TableCell>
+                          <TableCell align="right">{row.parentesco}</TableCell>
+                          <TableCell align="right">{row.dataNascDep}</TableCell>
+                          <TableCell align="right">{row.rgDep}</TableCell>
+                          <TableCell align="right">{row.cpfDep}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -141,6 +140,7 @@ class HeadDep extends Component {
 }
 
 function atualizaTabelaDep(){
+
     var newDep = {nomeComp,parentesco, dataNascDep, rgDep, cpfDep};
     setRows(prev => [...prev, newDep]);
     console.log(newDep);
@@ -150,29 +150,31 @@ function atualizaTabelaDep(){
 }
 
 
-const [nomeComp, setNomeComp] = useState("");
-const [parentesco, setParentesco] = useState("");
-const [dataNascDep, setDataNascDep] = useState("");
-const [rgDep, setRgDep] = useState("");
-const [cpfDep, setCpfDep] = useState("");
+let parentesco = "";
+let dataNascDep = "";
+let rgDep = "";
+let cpfDep = "";
 const [rows, setRows] = useState([]);
 
-class AddDependentes extends Component {
-    render(){
-      if(open){
-      return(
-       
-        <Zoom in={open}>
+let nomeComp = "";
+
+// const onChangeNomeComp = (event) => nome
+
+
+const FormAddDep = () => (
+	<Zoom in={open}>
           
         <Grid container  alignItems="center" spacing={4}>  
                   
             <Grid item xs={12} sm={4}> 
-            <TextField required style={{width:"90%" }} fullWidth  variant="outlined" id="nomeComp" label="Nome Completo" defaultValue="" 
-             onChange={e => setNomeComp(e.target.value)}
+            <TextField required style={{width:"90%" }} fullWidth type="text"  variant="outlined" id="nomeComp" label="Nome Completo"  
+             onChange={e => nomeComp = e.target.value}
+			 autoFocus
+			 defaultValue={nomeComp}
             /></Grid>
             <Grid item xs={12} sm={4}> 
-            <TextField required style={{width:"90%" }} fullWidth variant="outlined"  id="parentesco" label="Grau de Parentesco" defaultValue="" 
-            onChange={e => setParentesco(e.target.value)}
+            <TextField required style={{width:"90%" }} fullWidth variant="outlined"  id="parentesco" label="Grau de Parentesco"  
+            onChange={e => parentesco = e.target.value}
             /></Grid>
 
             <Grid item xs={12} sm={4}> 
@@ -183,7 +185,7 @@ class AddDependentes extends Component {
                     label="Data de Nascimento"
                     type="date"
                     defaultValue="2017-05-24"
-                    onChange={e => setDataNascDep(e.target.value)}
+                    onChange={e => dataNascDep = e.target.value}
                     className={classes.textField}
                     InputLabelProps={{
                       shrink: true,
@@ -193,11 +195,11 @@ class AddDependentes extends Component {
           
             <Grid item xs={12}  sm={4}> 
             <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="outlined"  label="RG" defaultValue="" 
-            onChange={e => setRgDep(e.target.value)}
+            onChange={e => rgDep = e.target.value}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
             <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF" defaultValue="" 
-            onChange={e => setCpfDep(e.target.value)}
+            onChange={e => cpfDep = e.target.value}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
                 <Button onClick={atualizaTabelaDep} style={{color:"green"}}>
@@ -209,6 +211,19 @@ class AddDependentes extends Component {
             </Grid>
     
       </Zoom> 
+);
+	
+
+
+class AddDependentes extends Component {
+	
+    render(){
+		console.log("render")
+		
+      if(open){
+      return(
+			<FormAddDep/>
+        
 
       );
     }else{

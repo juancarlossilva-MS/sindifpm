@@ -44,7 +44,9 @@ useEffect(() => {
 
   
 
-  
+  const handler = (selectedRow) => {
+    console.log("selectedRow:"+ selectedRow.nomeComp)
+}
   
   class TabelaDependentes extends Component {
     render(){
@@ -53,17 +55,19 @@ useEffect(() => {
             <TableContainer component={Paper}>
                   <Table className={classes.table} size="small" aria-label="a dense table">
                     <TableHead>
-                      <TableRow>
+                      <TableRow >
+                        
                         <TableCell>Nome Completo</TableCell>
                         <TableCell align="right">Parentesco º</TableCell>
                         <TableCell align="right">Data de Nasc.</TableCell>
                         <TableCell align="right">RG</TableCell>
                         <TableCell align="right">CPF</TableCell>
+                        <TableCell align="right">Ações</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {rows.map((row) => (
-                        <TableRow key={row.nomecomp}>
+                        <TableRow key={row.nomeComp}  >
                           <TableCell component="th" scope="row">
                             {row.nomeComp}
                           </TableCell>
@@ -71,6 +75,7 @@ useEffect(() => {
                           <TableCell align="right">{row.dataNascDep}</TableCell>
                           <TableCell align="right">{row.rgDep}</TableCell>
                           <TableCell align="right">{row.cpfDep}</TableCell>
+                          <TableCell align="right"><Button onClick={() => handler(row)}>{row.cpfDep}</Button></TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

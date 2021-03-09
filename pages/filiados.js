@@ -1,14 +1,17 @@
 import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
-import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,
+import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,Collapse,
     AppBar,Toolbar,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,
     IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography} from '@material-ui/core';
 
 
 
-import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd, People} from '@material-ui/icons/';
+import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp
+
+} from '@material-ui/icons/';
 import MenuIcon from '@material-ui/icons/Menu';
+import Header from "./components/Header";
 
 import fire from '../config/fire-config';
 import  Link from 'next/link';
@@ -28,19 +31,28 @@ const PrivatePage = ({ user }) => {
   };
 useEffect(() => {
     fire.database()
-      .ref('infoAtual')
+      .ref('filiados')
       .once("value").then((snap) => {
         
         /*const blogs = snap.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));*/
-        console.log('here');
-        var res = (snap.val())
-        setCanal(res.canal);
-        setUrlAtual(res.url);
-      
-       // setBlogs(blogs);
+		 snap.forEach(function(childSnapshot) {
+          // key will be "ada" the first time and "alan" the second time
+          
+			  const name = childSnapshot.key;
+				const fili = childSnapshot;
+				  setRows(prev=>[...prev,fili]);
+				  
+				childSnapshot.child("dependentes").forEach(function(dep){
+					console.log(dep.val()); 
+					
+				 });
+
+		  });
+	     
+		console.log(rows2);
       });
   }, []);
 
@@ -80,13 +92,12 @@ useEffect(() => {
   };
 
   const salvarNovasInfos = () => {
-
+		console.log(rows2);
+		console.log(rows);
     
   }
+const [rows2, setRows] = useState([]);
 
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
   
   const rows = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
@@ -95,7 +106,7 @@ useEffect(() => {
     createData('Cupcake', 305, 3.7, 67, 4.3),
     createData('Gingerbread', 356, 16.0, 49, 3.9),
   ];
-  
+  console.log(rows);
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -107,6 +118,105 @@ useEffect(() => {
       flexGrow: 1,
     },
   }));
+  
+  const useRowStyles = makeStyles({
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+});
+  
+function createData(name, calories, fat, carbs, protein, price) {
+  return {
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+    price,
+    history: [
+      { date: '2020-01-05', customerId: '11091700', amount: 3 },
+      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+    ],
+  };
+}
+
+function Row(props) {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+  const classes = useRowStyles();
+	console.log(row);
+	console.log(row.val());
+	const deps = row.child("dependentes");
+	deps.forEach((dep)=>(
+		console.log(dep.key)
+	))
+  return (
+    <React.Fragment>
+      <TableRow className={classes.root}>
+        <TableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {row.val().nome}
+        </TableCell>
+        <TableCell align="right">{row.val().funcao}</TableCell>
+        <TableCell align="right">{row.val().dataNasc}</TableCell>
+        <TableCell align="right">{row.val().dataAdm}</TableCell>
+        <TableCell align="right">{row.val().nomePai}</TableCell>
+        <TableCell align="right">{row.val().nomeMae}</TableCell>
+        <TableCell align="right">{row.val().rg}</TableCell>
+        <TableCell align="right">{row.val().cpf}</TableCell>
+        <TableCell align="right">{row.val().numCart}</TableCell>
+        <TableCell align="right">{row.val().dataValid}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>
+              <Typography variant="h6" gutterBottom component="div">
+                Dependentes
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Nome Completo</TableCell>
+                    <TableCell>Data de Nasc.</TableCell>
+                    <TableCell align="right">RG</TableCell>
+                    <TableCell align="right">CPF</TableCell>
+                  </TableRow>
+                </TableHead>
+              
+               		<TableBody>
+					  {row.child("dependentes").forEach((dep) => (
+						<TableRow key={dep.key}>
+						  <TableCell component="th" scope="row">
+							{dep.val().nomeComp}
+								{console.log(dep.val().nomeComp)}
+						  </TableCell>
+						  <TableCell>{dep.val().dataNasc}</TableCell>
+						  <TableCell align="right">{dep.val().rg}</TableCell>
+						  <TableCell align="right">
+							{dep.val().cpf}
+						  </TableCell>
+						</TableRow>
+					  ))}
+					</TableBody>
+				 
+                
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
+}
+  
+  
 
   const classes = useStyles();
 
@@ -115,25 +225,9 @@ useEffect(() => {
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link>
-
-
-    <AppBar position="static">
-    <Toolbar>
-    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-      <MenuIcon />
-    </IconButton>
-    <Link href="/">
-      <Button color="inherit">
-      <Typography variant="h6" className={classes.title}>
-        SINDIFPM
-      </Typography>
-      </Button>
-    </Link>
-    <h6 style={{marginLeft: '79%'}}>{user.email}</h6>
-    <Button color="inherit">sair</Button>
-  </Toolbar>
-</AppBar>
-        
+		
+		<Header/>
+        <div style={{margin:"5% 0 0 5%"}}>
           <Grid container spacing={2}>  
               <Grid item xs={12} ></Grid>
                     
@@ -153,46 +247,47 @@ useEffect(() => {
                     </Button>
                   </Link>
               </Grid>
-              
+               <Button onClick={salvarNovasInfos} color="primary">
+                       <GroupAdd />
+                       <Typography variant="h6"> filiado</Typography>
+                    </Button>
            
               <Grid item xs={12}></Grid>
 
-              <Grid item xs={2} spacing={0}></Grid>
+              <Grid item xs={2} ></Grid>
 
-              <Grid item xs={6} spacing={2}>
+              <Grid item xs={6} >
                 <TableContainer component={Paper}>
-                  <Table className={classes.table} size="small" aria-label="a dense table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Dessert (100g serving)</TableCell>
-                        <TableCell align="right">Calories</TableCell>
-                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow key={row.name}>
-                          <TableCell component="th" scope="row">
-                            {row.name}
-                          </TableCell>
-                          <TableCell align="right">{row.calories}</TableCell>
-                          <TableCell align="right">{row.fat}</TableCell>
-                          <TableCell align="right">{row.carbs}</TableCell>
-                          <TableCell align="right">{row.protein}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+					  <Table aria-label="collapsible table">
+						<TableHead>
+						  <TableRow>
+							<TableCell />
+							<TableCell>Nome Filiado</TableCell>
+							<TableCell align="right">Função</TableCell>
+							<TableCell align="right">Data de Nasc.</TableCell>
+							<TableCell align="right">Data de Admissão</TableCell>
+							<TableCell align="right">Nome do Pai</TableCell>
+							<TableCell align="right">Nome da Mãe</TableCell>
+							<TableCell align="right">RG</TableCell>
+							<TableCell align="right">CPF</TableCell>
+							<TableCell align="right">Nº Cart. Sócio</TableCell>
+							<TableCell align="right">Data de Valid.</TableCell>
+						  </TableRow>
+						</TableHead>
+						<TableBody>
+						  {rows2.map((row) => (
+							<Row key={row.val().cpf} row={row} />
+						  ))}
+						</TableBody>
+					  </Table>
+					</TableContainer>
               </Grid>
 
 
 
           </Grid>
 
-          
+          </div>
   </div>);
 };
 

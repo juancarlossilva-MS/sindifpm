@@ -7,7 +7,7 @@ import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,Inp
 
 
 import Header from "./components/Header";
-import {Facebook ,MoreVert,GroupAdd, Save,YouTube,AssignmentInd,Cancel, People} from '@material-ui/icons/';
+import {Facebook ,MoreVert,GroupAdd, Save,YouTube,AssignmentInd,Cancel, People,Delete} from '@material-ui/icons/';
 
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -44,9 +44,22 @@ useEffect(() => {
 
   
 
-  const handler = (selectedRow) => {
+  /*const handler = (selectedRow) => {
     console.log("selectedRow:"+ selectedRow.nomeComp)
-}
+    console.log(selectedRow)
+	console.log(rows);
+	for(var i =0; i<rows.length;i++){
+		if(rows[i].nomeComp == selectedRow.nomeComp){
+				console.log("achou "+rows[i].nomeComp);
+				rows.slice(i,1)
+		}
+	}
+}*/
+
+const handleRemoveItem = (selectedRow) => {
+   // const name = selectedRow;
+    setRows(rows.filter(item => item !== selectedRow));
+  };
   
   class TabelaDependentes extends Component {
     render(){
@@ -75,7 +88,7 @@ useEffect(() => {
                           <TableCell align="right">{row.dataNascDep}</TableCell>
                           <TableCell align="right">{row.rgDep}</TableCell>
                           <TableCell align="right">{row.cpfDep}</TableCell>
-                          <TableCell align="right"><Button onClick={() => handler(row)}>{row.cpfDep}</Button></TableCell>
+                          <TableCell align="right"><Button color="secondary" onClick={() => handleRemoveItem(row)}><Delete/></Button></TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -275,11 +288,34 @@ class AddDependentes extends Component {
   const handleChange2 = (event) => {
     setValue(event.target.value);
   };
+  const router = useRouter()
 
   function salvarFiliado() {
-    firebase.database().ref('filiados/' ).set({
-     
-    });
+    fire.database().ref('filiados/'+cpf ).set({
+		nome:name,
+		sname:sname,
+		dataNasc:dataNasc,
+		dataAdm:dataAdm,
+		funcao:funcao,
+		dataValid:dataValid,
+		nomePai:nomePai,
+		nomeMae:nomeMae,
+		rg:rg,
+		cpf:cpf,
+		numCart:numCart
+    }); 
+	if(rows.length > 0){
+		rows.map((row) => {
+			fire.database().ref('filiados/'+cpf+"/dependentes/"+row.nomeComp).set({
+				nomeComp:row.nomeComp,
+				dataNasc:row.dataNascDep,
+				parentesco:row.parentesco,
+				rg:row.rgDep,
+				cpf:row.cpfDep
+			});
+		});
+	}
+	router.push("/filiados");
   }
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -335,7 +371,7 @@ class AddDependentes extends Component {
 
    <Header/>   
    
-       <form onSubmit={salvarFiliado}>
+       <form >
           <div style={{margin:"5% 0 0 5%"}}>
           <Grid container  alignItems="flex-start" spacing={2}>  
         
@@ -436,7 +472,7 @@ class AddDependentes extends Component {
               
            
               <Grid item xs={12} sm={4}  >  
-              <Button type="submit" style={{color:"green"}}>
+              <Button onClick={salvarFiliado} style={{color:"green"}}>
                        <Save />
                        <Typography variant="h6"> salvar</Typography>
                 </Button>    

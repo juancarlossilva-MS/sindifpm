@@ -8,15 +8,19 @@ module.exports = {
       'react-native$': 'react-native-web',
       'react-native-webview$': 'react-native-web-webview',
     }
-    config.module.rules.push({
-      test: /postMock.html$/,
-      use: {
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-        },
-      }
-    })
+   
+	
+	config.module.rules.push({
+		test: /\.(png|jpe?g|gif)$/i,
+		use:{
+			loader: 'file-loader',
+			options: {
+			  name: '[path][name].[ext]',
+			},
+		}
+		
+	})
+	
     config.resolve.extensions = [
       '.web.js',
       '.web.ts',

@@ -7,8 +7,8 @@ import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,Inp
 
 
 
-import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp
-
+import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp,
+Print
 } from '@material-ui/icons/';
 import MenuIcon from '@material-ui/icons/Menu';
 import Header from "./components/Header";
@@ -141,6 +141,8 @@ function createData(name, calories, fat, carbs, protein, price) {
     ],
   };
 }
+ const router = useRouter();
+
 
 function Row(props) {
   const { row } = props;
@@ -172,6 +174,7 @@ function Row(props) {
         <TableCell align="right">{row.val().cpf}</TableCell>
         <TableCell align="right">{row.val().numCart}</TableCell>
         <TableCell align="right">{row.val().dataValid}</TableCell>
+        <TableCell align="right"><Button type="button" onClick={() => {   localStorage.setItem('filiSelected', JSON.stringify(row.val())), router.push("/printCart")}}><Print/></Button></TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -272,6 +275,7 @@ function Row(props) {
 							<TableCell align="right">CPF</TableCell>
 							<TableCell align="right">Nº Cart. Sócio</TableCell>
 							<TableCell align="right">Data de Valid.</TableCell>
+							<TableCell align="right">Ações</TableCell>
 						  </TableRow>
 						</TableHead>
 						<TableBody>

@@ -42,13 +42,14 @@ useEffect(() => {
           // key will be "ada" the first time and "alan" the second time
           
 			  const name = childSnapshot.key;
-				const fili = childSnapshot;
-				  setRows(prev=>[...prev,fili]);
+				const fili = childSnapshot.val();
+				// console.log(fili);
+					 const res = createDataFili( fili.nome,fili.sname,fili.cpf,fili.rg,fili.nomeMae,fili.nomePai,
+						fili.numCart,fili.dataNasc,fili.dataAdm,fili.dataValid,fili.funcao,fili.dependentes);
+					 console.log(res);
+				  setRows(prev=>[...prev,res]);
 				  
-				childSnapshot.child("dependentes").forEach(function(dep){
-					console.log(dep.val()); 
-					
-				 });
+				
 
 		  });
 	     
@@ -99,14 +100,7 @@ useEffect(() => {
 const [rows2, setRows] = useState([]);
 
   
-  const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
-  console.log(rows);
+
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -127,33 +121,50 @@ const [rows2, setRows] = useState([]);
   },
 });
   
-function createData(name, calories, fat, carbs, protein, price) {
+function createDataFili(nome,sname,cpf,rg,nomeMae,nomePai,numCart,dataNasc,dataAdm,dataValid,funcao,deps) {
+	// Object.map(deps)
+			let dps = [];
+
+	if(deps != null){
+		let keys = Object.keys(deps);
+	  
+		keys.forEach((key) => { dps = [...dps,deps[key]] });
+		
+	}
+	
+	// console.log(dps);
+	
+
+  
   return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      { date: '2020-01-05', customerId: '11091700', amount: 3 },
-      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
-    ],
+     nome,
+    sname,
+    cpf,
+    rg,
+    nomeMae,
+    nomePai,
+    numCart,
+    dataNasc,
+    dataAdm,
+    dataValid,
+    funcao,
+    dps
   };
+<<<<<<< HEAD
 }
  const router = useRouter();
 
+=======
+}  
+>>>>>>> 5c6683bb0203a25e91fb11cace5702e5b5fe5e17
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 	console.log(row);
-	console.log(row.val());
-	const deps = row.child("dependentes");
-	deps.forEach((dep)=>(
-		console.log(dep.key)
-	))
+
+	
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -163,8 +174,9 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.val().nome}
+          {row.nome + " "+row.sname}
         </TableCell>
+<<<<<<< HEAD
         <TableCell align="right">{row.val().funcao}</TableCell>
         <TableCell align="right">{row.val().dataNasc}</TableCell>
         <TableCell align="right">{row.val().dataAdm}</TableCell>
@@ -175,6 +187,17 @@ function Row(props) {
         <TableCell align="right">{row.val().numCart}</TableCell>
         <TableCell align="right">{row.val().dataValid}</TableCell>
         <TableCell align="right"><Button type="button" onClick={() => {   localStorage.setItem('filiSelected', JSON.stringify(row.val())), router.push("/printCart")}}><Print/></Button></TableCell>
+=======
+        <TableCell align="right">{row.funcao}</TableCell>
+        <TableCell align="right">{row.dataNasc}</TableCell>
+        <TableCell align="right">{row.dataAdm}</TableCell>
+        <TableCell align="right">{row.nomePai}</TableCell>
+        <TableCell align="right">{row.nomeMae}</TableCell>
+        <TableCell align="right">{row.rg}</TableCell>
+        <TableCell align="right">{row.cpf}</TableCell>
+        <TableCell align="right">{row.numCart}</TableCell>
+        <TableCell align="right">{row.dataValid}</TableCell>
+>>>>>>> 5c6683bb0203a25e91fb11cace5702e5b5fe5e17
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -194,19 +217,17 @@ function Row(props) {
                 </TableHead>
               
                		<TableBody>
-					  {row.child("dependentes").forEach((dep) => (
-						<TableRow key={dep.key}>
+					{row.dps.map((dep) => (
+						<TableRow key={dep.cpf}>
 						  <TableCell component="th" scope="row">
-							{dep.val().nomeComp}
-								{console.log(dep.val().nomeComp)}
+						  {dep.nomeComp}
 						  </TableCell>
-						  <TableCell>{dep.val().dataNasc}</TableCell>
-						  <TableCell align="right">{dep.val().rg}</TableCell>
-						  <TableCell align="right">
-							{dep.val().cpf}
+						  <TableCell>{dep.dataNasc}</TableCell>
+						  <TableCell align="right">{dep.rg}</TableCell>
+						  <TableCell align="right">{dep.cpf}
 						  </TableCell>
 						</TableRow>
-					  ))}
+					))}
 					</TableBody>
 				 
                 
@@ -224,7 +245,7 @@ function Row(props) {
   const classes = useStyles();
 
     return(
-  <div>
+  <div style={{overflow:"auto"}}>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link>
@@ -250,16 +271,12 @@ function Row(props) {
                     </Button>
                   </Link>
               </Grid>
-               <Button onClick={salvarNovasInfos} color="primary">
-                       <GroupAdd />
-                       <Typography variant="h6"> filiado</Typography>
-                    </Button>
+              
            
               <Grid item xs={12}></Grid>
 
-              <Grid item xs={2} ></Grid>
 
-              <Grid item xs={6} >
+              <Grid item xs={10} >
                 <TableContainer component={Paper}>
 					  <Table aria-label="collapsible table">
 						<TableHead>
@@ -280,7 +297,7 @@ function Row(props) {
 						</TableHead>
 						<TableBody>
 						  {rows2.map((row) => (
-							<Row key={row.val().cpf} row={row} />
+							<Row key={row.cpf} row={row} />
 						  ))}
 						</TableBody>
 					  </Table>

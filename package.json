@@ -14,13 +14,15 @@
     "@mui-treasury/styles": "^1.13.1",
     "@react-pdf/renderer": "^1.6.13",
     "firebase": "^8.2.1",
+    "jspdf": "^2.3.1",
     "next": "latest",
     "next-iron-session": "^4.1.10",
     "react": "^16.13.1",
     "react-dom": "^16.14.0",
     "react-google-font-loader": "^1.1.0",
     "react-native-web": "^0.13.14",
-    "react-native-web-webview": "^1.0.2"
+    "react-native-web-webview": "^1.0.2",
+    "react-to-pdf": "0.0.13"
   },
   "devDependencies": {
     "babel-plugin-react-native-web": "^0.13.14",

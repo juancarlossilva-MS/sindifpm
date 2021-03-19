@@ -1,7 +1,9 @@
-import React, {useState} from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import {Typography, CardContent, ButtonBase, Paper, CardActionArea, Grid, Card, Avatar} from "@material-ui/core";
+import React, {useState, Component, PropTypes} from "react";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import {Typography, CardContent, ButtonBase, Paper, Box, CardActionArea, Grid, Card, Avatar} from "@material-ui/core";
 import fire from '../config/fire-config';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -9,23 +11,35 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(2),
-    margin: 'auto',
-    maxWidth: 500,
+    maxWidth: 525,
+	border: "groove",
+    borderWidth: "7px",
+    borderColor: "black",
+	padding: "5px"
   },
   image: {
-    width: 128,
-    height: 128,
+    width: 194,
+    height: 194,
+	marginTop: "-28%",
+    marginLeft: "-14%"
   },
   img: {
     margin: 'auto',
     display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+    maxWidth: '75%',
+    maxHeight: '75%',
   },
+ 
 }));
 
-export default function ComplexGrid() {
+
+const theme = createMuiTheme();
+theme.typography.body2 = {
+  fontSize: '1.2rem'
+}
+	
+	
+function Carteira (){
   const classes = useStyles();
 	const [logo, setLogo] = useState("");
 
@@ -46,41 +60,121 @@ export default function ComplexGrid() {
 	  // Handle any errors
 	});
 	
+	const ref = React.createRef();
 	
-  return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Grid container spacing={2}>
+function	printDocument() {
+	const input = document.getElementById('divToPrint');
+	html2canvas(input)
+	.then((canvas) => {
+	const imgData = canvas.toDataURL('image/png');
+	const pdf = new jsPDF();
+	pdf.addImage(imgData, 'JPEG', 0, 0);
+	// pdf.output('dataurlnewwindow');
+	pdf.save("download.pdf");
+	})
+	;
+}
+	
+return(
+   <div>
+    <div ref={ref} id="divToPrint" className={classes.root}>
+	
+      <Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px"}}>
+        <Grid container spacing={0} style={{maxHeight:"97px"}}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src={logo} />
+              <img className={classes.img} alt="complex" src="logo.jpg" />
             </ButtonBase>
           </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
+          <Grid item xs={12} sm container style={{marginLeft:"-16%"}}>
+            <Grid item xs container direction="column" spacing={0} style={{marginTop:"-6%"}}>
               <Grid item xs>
-                <Typography gutterBottom variant="subtitle1">
-                  SINDFPM
+                <Typography align="center" style={{
+					fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-3px', fontSize: '33px'}}  variant="h5">
+                  S    I    N   D I F P M
                 </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Full resolution 1920x1080 • JPEG
+                <Typography style={{fontSize: "0.68rem", marginTop:"-2%"}} align="center" variant="h6"  >
+					<Box lineHeight={1} m={1}>
+					  Sindicato dos Funcionários Públicos Municipais de Bataguassu - MS
+					</Box>
                 </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  ID: 1030114
+				
+                <Typography align="center" variant="caption" color="" style={{    fontSize: "0.44rem"}}>
+					<Box lineHeight={1} m={1}>
+					 Reg. Min. Trabalho e Emprego 46.000.004428/01-11<br/>
+					 Rua Brasilândia, Nº 495 - Centro <br/>
+					 Fone: (67) 3541-1065
+					</Box>
                 </Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                  Remove
+               <Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
+                 Carteira de Sócio Nº: 
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">$19.00</Typography>
-            </Grid>
+            
           </Grid>
         </Grid>
+		<Grid container spacing={1}>
+          <Grid item>
+			 <Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
+					Nome: 
+              </Typography>
+		  </Grid>
+		</Grid>
+		<Grid container spacing={1}>
+          <Grid item>
+			 <Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
+                 Função: 
+              </Typography>
+		  </Grid>
+		</Grid>
+		<Grid container spacing={1}>
+          <Grid item xs={12} sm={6} >
+			 <Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
+                 Data de Admissão: 
+              </Typography>
+		  </Grid>
+		  <Grid item xs={12} sm={6}>
+			 <Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
+                 Válida até: 
+              </Typography>
+		  </Grid>
+		</Grid>
+		<Grid container spacing={2}>
+          <Grid item xs={12}>
+			 <Typography align="right" style={{fontSize: "0.68rem"}} variant="body2" color="">
+                 Bataguassu 12 de Outubro de 2020
+              </Typography>
+		  </Grid>
+		</Grid>
+		<Grid container spacing={7}>
+          <Grid item xs={12}>
+			 <Typography align="center" style={{fontSize: "0.68rem"}} variant="body2" color="">
+                 ____________________
+				 
+              </Typography>
+			  <Typography align="center"  style={{fontSize: "0.68rem"}} variant="body2" color="">
+                 
+				 Presidente
+              </Typography>
+		  </Grid>
+		</Grid>
       </Paper>
     </div>
-  );
-}
+	<button onClick={printDocument}>Print</button>
+	</div>
+	  
+);
+
+
+};
+	
+
+export default Carteira;
+
+
+
+
+
+
+

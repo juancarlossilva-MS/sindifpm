@@ -150,13 +150,8 @@ function createDataFili(nome,sname,cpf,rg,nomeMae,nomePai,numCart,dataNasc,dataA
     funcao,
     dps
   };
-<<<<<<< HEAD
 }
  const router = useRouter();
-
-=======
-}  
->>>>>>> 5c6683bb0203a25e91fb11cace5702e5b5fe5e17
 
 function Row(props) {
   const { row } = props;
@@ -176,18 +171,7 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.nome + " "+row.sname}
         </TableCell>
-<<<<<<< HEAD
-        <TableCell align="right">{row.val().funcao}</TableCell>
-        <TableCell align="right">{row.val().dataNasc}</TableCell>
-        <TableCell align="right">{row.val().dataAdm}</TableCell>
-        <TableCell align="right">{row.val().nomePai}</TableCell>
-        <TableCell align="right">{row.val().nomeMae}</TableCell>
-        <TableCell align="right">{row.val().rg}</TableCell>
-        <TableCell align="right">{row.val().cpf}</TableCell>
-        <TableCell align="right">{row.val().numCart}</TableCell>
-        <TableCell align="right">{row.val().dataValid}</TableCell>
-        <TableCell align="right"><Button type="button" onClick={() => {   localStorage.setItem('filiSelected', JSON.stringify(row.val())), router.push("/printCart")}}><Print/></Button></TableCell>
-=======
+
         <TableCell align="right">{row.funcao}</TableCell>
         <TableCell align="right">{row.dataNasc}</TableCell>
         <TableCell align="right">{row.dataAdm}</TableCell>
@@ -197,7 +181,8 @@ function Row(props) {
         <TableCell align="right">{row.cpf}</TableCell>
         <TableCell align="right">{row.numCart}</TableCell>
         <TableCell align="right">{row.dataValid}</TableCell>
->>>>>>> 5c6683bb0203a25e91fb11cace5702e5b5fe5e17
+        <TableCell align="right"><Button type="button" onClick={() => {   localStorage.setItem('filiSelected', JSON.stringify(row)), router.push("/printCart")}}><Print/></Button></TableCell>
+
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

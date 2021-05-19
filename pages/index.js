@@ -32,13 +32,13 @@ useEffect(() => {
         /*const blogs = snap.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
-        }));*/
+        }));
         console.log('here');
         var res = (snap.val())
         setCanal(res.canal);
         setUrlAtual(res.url);
       
-       // setBlogs(blogs);
+       // setBlogs(blogs);*/
       });
   }, []);
 

@@ -13,6 +13,7 @@
     "@mui-treasury/components": "^1.10.1",
     "@mui-treasury/styles": "^1.13.1",
     "@react-pdf/renderer": "^1.6.13",
+    "dom-to-image": "^2.6.0",
     "firebase": "^8.2.1",
     "jspdf": "^2.3.1",
     "next": "latest",

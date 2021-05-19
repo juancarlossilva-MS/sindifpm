@@ -7,7 +7,7 @@ import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,Inp
 
 
 
-import {Facebook ,GroupAdd, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp,
+import {Facebook ,DoneAll, Close, GroupAdd, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp,
 Print
 } from '@material-ui/icons/';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -46,14 +46,14 @@ useEffect(() => {
 				// console.log(fili);
 					 const res = createDataFili( fili.nome,fili.sname,fili.cpf,fili.rg,fili.nomeMae,fili.nomePai,
 						fili.numCart,fili.dataNasc,fili.dataAdm,fili.dataValid,fili.funcao,fili.dependentes);
-					 console.log(res);
+					 //console.log(res);
 				  setRows(prev=>[...prev,res]);
 				  
 				
 
 		  });
 	     
-		console.log(rows2);
+	//	console.log(rows2);
       });
   }, []);
 
@@ -87,14 +87,15 @@ useEffect(() => {
   const [modalStyle] = React.useState(getModalStyle);
 
   const [value, setValue] = React.useState('female');
+  const [openmul, setOpenmul] = React.useState(true);
 
   const handleChange = (event) => {
     setValue(event.target.value);
   };
 
   const salvarNovasInfos = () => {
-		console.log(rows2);
-		console.log(rows);
+		//console.log(rows2);
+	//	console.log(rows);
     
   }
 const [rows2, setRows] = useState([]);
@@ -154,10 +155,10 @@ function createDataFili(nome,sname,cpf,rg,nomeMae,nomePai,numCart,dataNasc,dataA
  const router = useRouter();
 
 function Row(props) {
-  const { row } = props;
+  const { row,index } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
-	console.log(row);
+//	console.log(row);
 
 	
   return (
@@ -181,8 +182,9 @@ function Row(props) {
         <TableCell align="right">{row.cpf}</TableCell>
         <TableCell align="right">{row.numCart}</TableCell>
         <TableCell align="right">{row.dataValid}</TableCell>
+        { openmul ? 
         <TableCell align="right"><Button type="button" onClick={() => {   localStorage.setItem('filiSelected', JSON.stringify(row)), router.push("/printCart")}}><Print/></Button></TableCell>
-
+         :   <Checkbox key={row.cpf}  checked={cartsCheck[row.cpf]}  value={JSON.stringify(row)} onClick={addArrayCarts} />}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -225,6 +227,73 @@ function Row(props) {
   );
 }
   
+const [arrayCarts, setArrayCarts] = React.useState([]);
+const [cartsCheck, setCartsCheck] = React.useState([]);
+function addArrayCarts(event){
+   
+    let fs = JSON.parse(event.target.value);
+  if(cartsCheck[fs.cpf]){
+    cartsCheck[fs.cpf] = false;
+    console.log(arrayCarts);
+    console.log(fs);
+    console.log(cartsCheck);
+    setArrayCarts(arrayCarts.filter(item => item.cpf !== fs.cpf));
+  }else{
+     cartsCheck[fs.cpf] = true;
+     console.log(cartsCheck);
+     setArrayCarts(prev=>[...prev,fs]);
+  }
+
+  //  let cpf = fs.cpf;
+   // setCartsCheck(prev=>[cpf,true])
+  
+
+}
+
+function GerarCarteiras(){
+  console.log(arrayCarts);
+  localStorage.setItem('filiSelected', JSON.stringify(arrayCarts));
+   router.push("/printCart");
+
+}
+const [selAll, setSelAll] = React.useState(true);
+
+function SelAll(){
+  rows2.map((row) => {
+
+    cartsCheck[row.cpf] = true;     
+     setArrayCarts(prev=>[...prev,row]); 
+    
+  });
+  setSelAll(!selAll);
+
+}
+function DesAll(){
+  rows2.map((row) => {  
+     cartsCheck[row.cpf] = false;
+     setArrayCarts([]);
+    
+  });
+  setSelAll(!selAll);
+}
+
+function SelecionaTodas(){
+
+    if(selAll){
+      return(
+      <Button color="primary" onClick={SelAll}>
+        <DoneAll /><Typography variant="h6">Selecionar Todas</Typography>
+      </Button>);
+    }else{
+        return(
+        <Button color="primary" onClick={DesAll}>
+        <Close /><Typography variant="h6">Desmarcar Todas</Typography>
+      </Button>);
+    }
+  
+}
+
+function OpenCheckBox(){ setOpenmul(!openmul); }
   
 
   const classes = useStyles();
@@ -237,7 +306,7 @@ function Row(props) {
 		
 		<Header/>
         <div style={{margin:"5% 0 0 5%"}}>
-          <Grid container spacing={2}>  
+          <Grid container >  
               <Grid item xs={12} ></Grid>
                     
               <Grid item xs={12} sm={2}></Grid>
@@ -255,6 +324,33 @@ function Row(props) {
                        <Typography variant="h6"> filiado</Typography>
                     </Button>
                   </Link>
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                  {
+                    openmul ?
+                   <Button color="primary" onClick={OpenCheckBox}>
+                       <Print />
+                       <Typography variant="h6"> Gerar Multiplas Carterinhas</Typography>
+                     </Button>
+                   :
+                   <Button color="primary" onClick={OpenCheckBox}>
+                       <Print /><Typography variant="h6">Cancelar</Typography>
+                     </Button>                                                         
+                    }
+
+                    {!openmul && 
+                      <SelecionaTodas/>                  
+                     
+                    }
+
+                    {arrayCarts.length > 0 && !openmul &&
+
+                      <Button color="primary" onClick={GerarCarteiras}>
+                        <DoneAll />
+                        <Typography variant="h6"> Confirmar Carterinhas Selecionadas</Typography>
+                      </Button>
+                    }
+                 
               </Grid>
               
            
@@ -278,10 +374,11 @@ function Row(props) {
 							<TableCell align="right">Nº Cart. Sócio</TableCell>
 							<TableCell align="right">Data de Valid.</TableCell>
 							<TableCell align="right">Ações</TableCell>
+
 						  </TableRow>
 						</TableHead>
 						<TableBody>
-						  {rows2.map((row) => (
+						  {rows2.map((row,index) => (
 							<Row key={row.cpf} row={row} />
 						  ))}
 						</TableBody>
@@ -292,7 +389,6 @@ function Row(props) {
 
 
           </Grid>
-
           </div>
   </div>);
 };

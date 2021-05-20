@@ -46,16 +46,16 @@ function Carteira (){
 			let k =0;
 			const row = [];
 			for(k=0;k<arrayFili.length;k++){
-				if(arrayFili[k+1] != null){
+				/*if(arrayFili[k+1] != null){
 				row.push(
 				<Grid container  >
 											
 								<Grid item xs={3}  >
-									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",height:"200px"}}>
-										<Grid container spacing={0} style={{maxHeight:"97px"}}>
+									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
+										<Grid container spacing={0} style={{maxHeight:"97px",minHeight:"97px"}}>
 										<Grid item>
 											<ButtonBase className={classes.image}>
-											<img className={classes.img} style={{ maxWidth: '62%'}} alt="complex" src="logo.jpg" />
+											<img className={classes.img} style={{ maxWidth: '62%',minWidth: '62%'}} alt="complex" src="logo.jpg" />
 											</ButtonBase>
 										</Grid>
 										<Grid item xs={12} sm container style={{marginLeft:"-23%",marginRight:"-4%"}}>
@@ -132,8 +132,7 @@ function Carteira (){
 										</Grid>
 										</Grid>
 									</Paper>
-									<br/>
-									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",height:"200px"}}>
+									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
 									<Grid container spacing={0} style={{maxHeight:"97px"}}>
 									
 									
@@ -190,11 +189,11 @@ function Carteira (){
 								</Grid>
 							
 								<Grid item xs={3}  >
-									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",height:"200px"}}>
-										<Grid container spacing={0} style={{maxHeight:"97px"}}>
+									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
+										<Grid container spacing={0} style={{maxHeight:"97px",minHeight:"97px"}}>
 										<Grid item>
 											<ButtonBase className={classes.image}>
-											<img className={classes.img} style={{ maxWidth: '62%'}} alt="complex" src="logo.jpg" />
+											<img className={classes.img} style={{ maxWidth: '62%',minWidth: '62%'}} alt="complex" src="logo.jpg" />
 											</ButtonBase>
 										</Grid>
 										<Grid item xs={12} sm container style={{marginLeft:"-23%",marginRight:"-4%"}}>
@@ -271,11 +270,8 @@ function Carteira (){
 										</Grid>
 										</Grid>
 									</Paper>
-									<br/>
-									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",height:"200px"}}>
+									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
 									<Grid container spacing={0} style={{maxHeight:"97px"}}>
-									
-									
 										<Grid item xs>
 											<Typography align="center" style={{
 												fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '33px'}}  variant="h5">
@@ -328,19 +324,20 @@ function Carteira (){
 								</Paper>
 								</Grid>
 								
-						
+					
 					</Grid>);
 				k++;
-				}else{
+				row.push(<br/>);
+				}else{*/
 					row.push(
-						<Grid container  >
+						<Grid container id={"divisor"+k} >
 													
 										<Grid item xs={3}  >
-											<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",height:"200px"}}>
-												<Grid container spacing={0} style={{maxHeight:"97px"}}>
+											<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
+											<Grid container spacing={0} style={{maxHeight:"97px",minHeight:"97px"}}>
 												<Grid item>
 													<ButtonBase className={classes.image}>
-													<img className={classes.img} style={{ maxWidth: '62%'}} alt="complex" src="logo.jpg" />
+													<img className={classes.img} style={{ maxWidth: '62%', minWidth: '62%'}} alt="complex" src="logo.jpg" />
 													</ButtonBase>
 												</Grid>
 												<Grid item xs={12} sm container style={{marginLeft:"-23%",marginRight:"-4%"}}>
@@ -417,9 +414,10 @@ function Carteira (){
 												</Grid>
 												</Grid>
 											</Paper>
-											<br/>
-											<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",height:"200px"}}>
+											<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
 											<Grid container spacing={0} style={{maxHeight:"97px"}}>
+									
+									
 											
 											
 												<Grid item xs>
@@ -475,7 +473,8 @@ function Carteira (){
 										</Grid>
 							</Grid>		
 					);	
-				}
+					row.push(<br/>);
+				
 			}
 						
 				
@@ -509,15 +508,40 @@ function Carteira (){
 	const ref = React.createRef();
 	
 function	printDocument() {
-	const input = document.getElementById('divToPrint');
-	html2canvas(input,{scale:2})
+	const input = document.getElementById('divisor0');
+	
+	var pdf = new jsPDF("p", "mm", "a4");
+	const data  = '';
+	html2canvas(input,{scale:2.5,scrollY: -window.scrollY,windowWidth:1600,height:1400})
 	.then((canvas) => {
 	const imgData = canvas.toDataURL('image/png');
-	const pdf = new jsPDF();
-	pdf.addImage(imgData, 'PNG', 0,0,424,123);
-	// pdf.output('dataurlnewwindow');
-	pdf.save("download.pdf");
+	console.log(canvas.height);
+
+		//var a = document.createElement('a');
+        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+      //  a.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+      //  a.download = 'somefilename.png';
+      //  a.click();
+	/*var height = 1122.52;
+
+	const totPage = (Math.ceil(canvas.height/height));
+	//pdf.addImage(imgData, 'PNG', 0,0,424,123);
+	for (var i = 1; i <= totPage; i++) {
+		pdf.addPage();
+		pdf.addImage(imgData, 'JPG', 0,0,424,123)
+	}*/
+	
+	
+	}).then((imgData)=>{
+		pdf.addImage(imgData, 'PNG', 0,0,424,370);
+			pdf.addPage("a4","p");
+			//console.log(pdf);
+			// pdf.output('dataurlnewwindow');
+			pdf.save("download.pdf");
+
+
 	});
+	
 }
 
 function montaCarteira(arrayFili){
@@ -538,8 +562,12 @@ function clear(){
 const filiSelect = JSON.parse(localStorage.getItem("filiSelected"));
 
 
-function GeradorDeCarteira (){
+function GeradorDeCarteira (){	
+	
+	return (<div>{MoldeCarteira(filiSelect)}</div>);
 
+
+/*
 let arrayFili = [];
 
 
@@ -555,13 +583,13 @@ for(let i =0; i < filiSelect.length;i++){
 	let arrayCopia = arrayFili;
 
 	if(x == 4){	
-		return (<div>{MoldeCarteira(arrayFili)}</div>);
+	
 
 		MoldeCarteira(arrayCopia);
 		arrayFili = [];
 	}
 }
-if(x != 0) MoldeCarteira(arrayFili);
+if(x != 0) MoldeCarteira(arrayFili);*/
 }
 
 return(

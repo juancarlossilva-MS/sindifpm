@@ -1,6 +1,6 @@
-import React, {useState, Component, PropTypes} from "react";
+import React, {useState, useEffect, Component, PropTypes} from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import {Typography, CardContent, ButtonBase, Paper, Box, CardActionArea, Grid, Card, Avatar} from "@material-ui/core";
+import {Typography, CardContent, CircularProgress, ButtonBase, Paper, Box, Button, CardActionArea, Grid, Card, Avatar} from "@material-ui/core";
 import fire from '../config/fire-config';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -507,15 +507,7 @@ function Carteira (){
 	
 	const ref = React.createRef();
 	
-function	printDocument() {
-	const input = document.getElementById('divisor0');
-	
-	var pdf = new jsPDF("p", "mm", "a4");
-	const data  = '';
-	html2canvas(input,{scale:2.5,scrollY: -window.scrollY,windowWidth:1600,height:1400})
-	.then((canvas) => {
-	const imgData = canvas.toDataURL('image/png');
-	console.log(canvas.height);
+
 
 		//var a = document.createElement('a');
         // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
@@ -530,17 +522,34 @@ function	printDocument() {
 		pdf.addPage();
 		pdf.addImage(imgData, 'JPG', 0,0,424,123)
 	}*/
-	
-	
-	}).then((imgData)=>{
-		pdf.addImage(imgData, 'PNG', 0,0,424,370);
-			pdf.addPage("a4","p");
-			//console.log(pdf);
-			// pdf.output('dataurlnewwindow');
-			pdf.save("download.pdf");
 
+function	printDocument() {
+	console.log("inicio do salvamento");
+	
+	var pdf = new jsPDF("p", "mm", "a4");
+	const data  = '';
+	for(let s=0;s< filiSelect.length;s++){
+		const input = document.getElementById('divisor'+s);
+		setExibe(true);
+		html2canvas(input,{scale:4,scrollY: -window.scrollY,windowWidth:1600,height:1400})
+		.then((canvas) => {
+			
+			const imgData = canvas.toDataURL('image/jpeg',0.3);
+			pdf.addImage(imgData, 'JPEG', 0,0,424,370);
+			
+			if((s+1) == filiSelect.length){
+				let newDate = new Date()
 
-	});
+				let date = newDate.getDate()+" "+newDate.getMonth()+" "+newDate.getFullYear();
+				
+				pdf.save(date+".pdf");
+				console.log("fim do salvamento");
+				setExibe(false);
+			}else{
+				pdf.addPage();
+			}
+		});
+	}
 	
 }
 
@@ -592,14 +601,30 @@ for(let i =0; i < filiSelect.length;i++){
 if(x != 0) MoldeCarteira(arrayFili);*/
 }
 
+
+   
+const [exibe, setExibe] = useState(false); 
 return(
    <div>
-
-    <div ref={ref} id="divToPrint" className={classes.root}>
+	   {exibe &&
+	   		<div style={{backgroundColor:"#0f0f0f", height:"100%"}}>
+			<CircularProgress />
+			</div>
+	   }
+	 <br/>
+    <br/>  
+	   <Button onClick={printDocument} variant="contained" color="primary">Imprimir Carteiras</Button>
+    <br/>
+    <br/>
+    
+    <br/>
+    <br/>
+    <br/>
+	<div ref={ref} id="divToPrint" className={classes.root}>
 		<GeradorDeCarteira />
 	</div>
 	<br/>
-	<button onClick={printDocument}>Print</button>
+	
 	</div>
 	  
 );

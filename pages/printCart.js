@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Component, PropTypes} from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import {Typography, CardContent, CircularProgress, ButtonBase, Paper, Box, Button, CardActionArea, Grid, Card, Avatar} from "@material-ui/core";
+import {Typography, CardContent, LinearProgress, ButtonBase, Paper, Box, Button, CardActionArea, Grid, Card, Avatar} from "@material-ui/core";
 import fire from '../config/fire-config';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -607,16 +607,18 @@ const [exibe, setExibe] = useState(false);
 return(
    <div>
 	   {exibe &&
-	   		<div style={{backgroundColor:"#0f0f0f", height:"100%"}}>
-			<CircularProgress />
+		    <div style={{height:"100%"}}>
+				<div style={{filter: "blur(5px)",width: "100%",height: "100%",backgroundColor: "#ccc"}}>
+				</div>
+				
+				<LinearProgress style={{marginTop: "-51%",marginBottom: "45%"}} />
 			</div>
 	   }
 	 <br/>
     <br/>  
 	   <Button onClick={printDocument} variant="contained" color="primary">Imprimir Carteiras</Button>
     <br/>
-    <br/>
-    
+    <br/>    
     <br/>
     <br/>
     <br/>

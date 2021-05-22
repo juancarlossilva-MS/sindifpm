@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import fire from '../../config/fire-config';
+import fire from '../config/fire-config';
 
 import React, { useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';

@@ -268,7 +268,7 @@ function printDocument(){
 	for(let s=0;s< arrayCarts.length;s++){
 		const input = document.getElementById('divisor'+s);
 		console.log(input);
-		html2canvas(input,{scale:4 })
+		html2canvas(input,{scale:4, windowWidth:1600})
 		.then((canvas) => {
 			
 			const imgData = canvas.toDataURL('image/jpeg',0.3);

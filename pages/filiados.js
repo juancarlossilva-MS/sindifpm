@@ -268,11 +268,11 @@ function printDocument(){
 	for(let s=0;s< arrayCarts.length;s++){
 		const input = document.getElementById('divisor'+s);
 		console.log(input);
-		html2canvas(input,{scale:4,windowWidth:1600,height:1400})
+		html2canvas(input,{scale:4 })
 		.then((canvas) => {
 			
 			const imgData = canvas.toDataURL('image/jpeg',0.3);
-			pdf.addImage(imgData, 'JPEG', 0,0,424,370);
+			pdf.addImage(imgData, 'JPEG', 0,0,424,123);
 			
 			if((s+1) == arrayCarts.length){
 				let newDate = new Date()

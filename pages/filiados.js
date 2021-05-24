@@ -3,9 +3,12 @@ import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
 import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,Collapse,
     AppBar,Toolbar,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,
-    IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography} from '@material-ui/core';
+    IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography,
+	CardContent, LinearProgress, ButtonBase, CardActionArea, Card
+	} from '@material-ui/core';
 
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 import {Facebook ,DoneAll, Close, GroupAdd, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp,
 Print
@@ -77,7 +80,6 @@ useEffect(() => {
     paper: {
       position: 'absolute',
       width: 400,
-      backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
@@ -117,7 +119,7 @@ const [rows2, setRows] = useState([]);
   const useRowStyles = makeStyles({
   root: {
     '& > *': {
-      borderBottom: 'unset',
+      borderBottom: 'groove',
     },
   },
 });
@@ -157,13 +159,13 @@ function createDataFili(nome,sname,cpf,rg,nomeMae,nomePai,numCart,dataNasc,dataA
 function Row(props) {
   const { row,index } = props;
   const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
+  const classesR = useRowStyles();
 //	console.log(row);
 
 	
   return (
     <React.Fragment>
-      <TableRow className={classes.root}>
+      <TableRow className={classesR.root}>
         <TableCell>
           <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
@@ -183,7 +185,7 @@ function Row(props) {
         <TableCell align="right">{row.numCart}</TableCell>
         <TableCell align="right">{row.dataValid}</TableCell>
         { openmul ? 
-        <TableCell align="right"><Button type="button" onClick={() => {   localStorage.setItem('filiSelected', JSON.stringify(row)), router.push("/printCart")}}><Print/></Button></TableCell>
+        <TableCell align="right"><Button type="button" onClick={() => {router.push({pathname:"/printCart",filiSelected:JSON.stringify(row)})}}><Print/></Button></TableCell>
          :   <Checkbox key={row.cpf}  checked={cartsCheck[row.cpf]}  value={JSON.stringify(row)} onClick={addArrayCarts} />}
       </TableRow>
       <TableRow>
@@ -231,7 +233,7 @@ const [arrayCarts, setArrayCarts] = React.useState([]);
 const [cartsCheck, setCartsCheck] = React.useState([]);
 function addArrayCarts(event){
    
-    let fs = JSON.parse(event.target.value);
+  let fs = JSON.parse(event.target.value);
   if(cartsCheck[fs.cpf]){
     cartsCheck[fs.cpf] = false;
     console.log(arrayCarts);
@@ -252,11 +254,46 @@ function addArrayCarts(event){
 
 function GerarCarteiras(){
   console.log(arrayCarts);
-  localStorage.setItem('filiSelected', JSON.stringify(arrayCarts));
-   router.push("/printCart");
+  setExibe(true);
+  setOverflow("hidden");
+  setFiltro("blur(5px)");
+  printDocument();
+  
+}
 
+
+function printDocument(){
+	var pdf = new jsPDF("p", "mm", "a4");
+
+	for(let s=0;s< arrayCarts.length;s++){
+		const input = document.getElementById('divisor'+s);
+		console.log(input);
+		html2canvas(input,{scale:4, windowWidth:window.innerWidth,width:1600})
+		.then((canvas) => {
+			
+			const imgData = canvas.toDataURL('image/jpeg',0.3);
+			pdf.addImage(imgData, 'JPEG', 0,0,424,123);
+			
+			if((s+1) == arrayCarts.length){
+				let newDate = new Date()
+
+				let date = newDate.getDate()+" "+newDate.getMonth()+" "+newDate.getFullYear();
+				
+				pdf.save(date+".pdf");
+				console.log("fim do salvamento");
+				setExibe(false);
+				setOverflow("auto");
+				setFiltro("");
+			}else{
+				pdf.addPage();
+			}
+		});
+	}
+	
+	
 }
 const [selAll, setSelAll] = React.useState(true);
+	const ref = React.createRef();
 
 function SelAll(){
   rows2.map((row) => {
@@ -293,16 +330,221 @@ function SelecionaTodas(){
   
 }
 
-function OpenCheckBox(){ setOpenmul(!openmul); }
-  
+const useStylesCarts = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    maxWidth: 525,
+	border: "groove",
+    borderWidth: "7px",
+    borderColor: "black",
+	padding: "5px"
+  },
+  image: {
+    width: 194,
+    height: 194,
+	marginTop: "-31%",
+    marginLeft: "-20%"
+  },
+  img: {
+    margin: 'auto',
+    display: 'block',
+    maxWidth: '62%',
+    maxHeight: '75%',
+  },
+ 
+}));
+const classes = useStylesCarts();
 
-  const classes = useStyles();
+function MoldeCarteira(){
+
+	let k =0;
+	const row = [];
+	for(k=0;k<arrayCarts.length;k++){
+			row.push(
+				<Grid container id={"divisor"+k}>
+											
+								<Grid item xs={3}  >
+									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
+									<Grid container spacing={0} style={{maxHeight:"97px",minHeight:"97px"}}>
+										<Grid item>
+											<ButtonBase className={classes.image}>
+											<img className={classes.img} style={{ maxWidth: '62%', minWidth: '62%'}} alt="complex" src="logo.jpg" />
+											</ButtonBase>
+										</Grid>
+										<Grid item xs={12} sm container style={{marginLeft:"-23%",marginRight:"-4%"}}>
+											<Grid item xs container direction="column" spacing={0} style={{marginTop:"-6%"}}>
+											<Grid item xs>
+												<Typography align="center" style={{
+													fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '33px'}}  variant="h5">
+												S    I    N   D I F P M
+												</Typography>
+												<Typography style={{fontSize: "0.8rem", marginTop:"-5%"}} align="center" variant="h6"  >
+													<Box lineHeight={1} m={1}>
+													Sindicato dos Funcionários Públicos Municipais de Bataguassu - MS
+													</Box>
+												</Typography>
+												
+												<Typography align="center" variant="caption" color="" style={{    fontSize: "0.54rem"}}>
+													<Box lineHeight={1} m={1} style={{marginRight:"2%",marginLeft:"-1%", marginTop:"-2%"}}>
+													Reg. Min. Trabalho e Emprego 46.000.004428/01-11<br/>
+													Rua Brasilândia, Nº 495 - Centro <br/>
+													Fone: (67) 3541-1065
+													</Box>
+												</Typography>
+											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
+												Carteira de Sócio Nº: 
+												</Typography>
+											</Grid>
+											</Grid>
+											
+										</Grid>
+										</Grid>
+										<Grid container spacing={1}>
+										<Grid item  style={{padding:"2px"}}>
+											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
+													Nome: {arrayCarts[k].nome + " "+arrayCarts[k].sname}
+											</Typography>
+										</Grid>
+										</Grid>
+										<Grid container spacing={1}>
+										<Grid item style={{padding:"2px"}}>
+											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
+												Função: 
+											</Typography>
+										</Grid>
+										</Grid>
+										<Grid container spacing={1}>
+										<Grid item xs={12} sm={6} style={{padding:"2px"}}>
+											<Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
+												Data de Admissão: 
+											</Typography>
+										</Grid>
+										<Grid item xs={12} sm={6} style={{padding:"2px"}}>
+											<Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
+												Válida até: 
+											</Typography>
+										</Grid>
+										</Grid>
+										<Grid container spacing={2} >
+										<Grid item xs={12} style={{padding:"6px"}}>
+											<Typography align="right" style={{fontSize: "0.68rem"}} variant="body2" color="">
+												Bataguassu 12 de Outubro de 2020
+											</Typography>
+										</Grid>
+										</Grid>
+										<Grid container spacing={7}>
+										<Grid item xs={12} style={{padding:"22px"}}>
+											<Typography align="center" style={{fontSize: "0.68rem"}} variant="body2" color="">
+												____________________
+												
+											</Typography>
+											<Typography align="center"  style={{fontSize: "0.68rem"}} variant="body2" color="">
+												
+												Presidente
+											</Typography>
+										</Grid>
+										</Grid>
+									</Paper>
+									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
+									<Grid container spacing={0} style={{maxHeight:"97px"}}>
+							
+							
+									
+									
+										<Grid item xs>
+											<Typography align="center" style={{
+												fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '33px'}}  variant="h5">
+											FILIAÇÃO
+											</Typography>
+											
+										</Grid>
+									
+									</Grid>
+									<Grid container spacing={1}>
+										<Grid item  style={{padding:"2px"}}>
+											<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+													Pai: {arrayCarts[k].nomePai}
+											</Typography>
+										</Grid>
+										</Grid>
+										<Grid container spacing={1}>
+											<Grid item  style={{padding:"2px"}}>
+												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+														Mãe: {arrayCarts[k].nomeMae}
+												</Typography>
+											</Grid>
+										</Grid>
+										<Grid container spacing={1}>
+											<Grid item  style={{padding:"2px"}}>
+												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+														RG: {arrayCarts[k].rg}
+												</Typography>
+											</Grid>
+										</Grid>
+										<Grid container spacing={1}>
+											<Grid item  style={{padding:"2px"}}>
+												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+														Data de Nacimento: {dataNasc(arrayCarts[k].dataNasc)}
+												</Typography>
+											</Grid>
+										</Grid>
+										<Grid container spacing={1}>
+
+											<Grid item  style={{padding:"2px"}}>
+												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+														CPF: {arrayCarts[k].cpf}
+												</Typography>
+											</Grid>
+										</Grid>
+
+
+									
+
+								</Paper>
+								</Grid>
+					</Grid>		
+			);	
+			row.push(<br/>);
+		
+	}
+				
+		
+
+	return row;
+
+
+}
+
+function dataNasc(data){
+	return data[8]+data[9]+"/"+data[5]+data[6]+"/"+data[0]+data[1]+data[2]+data[3];
+}
+
+function OpenCheckBox(){ setOpenmul(!openmul); }
+const [exibe, setExibe] = useState(false); 
+const [filtro, setFiltro] = useState(""); 
+const [overflow, setOverflow] = useState("auto"); 
+const [exibeCarts, setExibeCarts] = useState(false); 
+
+
+
+
+  const classesP = useStylesCarts();
 
     return(
-  <div style={{overflow:"auto"}}>
+	<div style={{overflow:overflow }}>
+	{exibe &&
+		<LinearProgress style={{marginTop: "27%",marginBottom: "-33%"}}/>
+		
+	}
+	<div style={{filter:filtro }}>
+	 
+  
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link>
+	  
 		
 		<Header/>
         <div style={{margin:"5% 0 0 5%"}}>
@@ -358,7 +600,7 @@ function OpenCheckBox(){ setOpenmul(!openmul); }
 
 
               <Grid item xs={10} >
-                <TableContainer component={Paper}>
+                <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
 					  <Table aria-label="collapsible table">
 						<TableHead>
 						  <TableRow>
@@ -390,6 +632,62 @@ function OpenCheckBox(){ setOpenmul(!openmul); }
 
           </Grid>
           </div>
+		 {arrayCarts.length > 0 && !openmul &&
+			<div>
+				<br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+				<br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+				<br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/><br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+				<br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+				<br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  <br/>
+			  	<div ref={ref} id="divToPrint" width={1600} className={classesP.root}>
+					<MoldeCarteira/>
+				</div>		  
+			</div>		  
+		  }
+		  
+		  </div>
   </div>);
 };
 

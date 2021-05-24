@@ -4,6 +4,7 @@ import {Typography, CardContent, LinearProgress, ButtonBase, Paper, Box, Button,
 import fire from '../config/fire-config';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useRouter } from 'next/router'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +41,9 @@ theme.typography.body2 = {
 	
 	
 function Carteira (){
+	const router = useRouter();
+	 console.log(query);
+	
 		let k = 0;
 		function MoldeCarteira(arrayFili){
 
@@ -637,6 +641,10 @@ return(
 
 export default Carteira;
 
+Carteira.getInitialProps = ({ query }) => {
+	
+  return { query }
+}
 
 
 

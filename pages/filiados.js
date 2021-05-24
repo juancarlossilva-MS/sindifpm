@@ -185,7 +185,7 @@ function Row(props) {
         <TableCell align="right">{row.numCart}</TableCell>
         <TableCell align="right">{row.dataValid}</TableCell>
         { openmul ? 
-        <TableCell align="right"><Button type="button" onClick={() => {router.push({pathname:"/printCart",filiSelected:JSON.stringify(row)})}}><Print/></Button></TableCell>
+        <TableCell align="right"><Button type="button" onClick={() => {GerarUmaCarteira(row)}}><Print/></Button></TableCell>
          :   <Checkbox key={row.cpf}  checked={cartsCheck[row.cpf]}  value={JSON.stringify(row)} onClick={addArrayCarts} />}
       </TableRow>
       <TableRow>
@@ -259,6 +259,17 @@ function GerarCarteiras(){
   setFiltro("blur(5px)");
   printDocument();
   
+}
+
+
+function GerarUmaCarteira(row){
+	
+	console.log(row);
+	
+	cartsCheck[row.cpf] = true;
+     console.log(cartsCheck);
+     setArrayCarts(prev=>[...prev,row]);
+	GerarCarteiras();
 }
 
 
@@ -357,6 +368,22 @@ const useStylesCarts = makeStyles((theme) => ({
 }));
 const classes = useStylesCarts();
 
+function formatar() {
+  
+  
+  var data = new Date();
+
+  var day = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"][data.getDay()];
+  var date = data.getDate();
+  var month = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"][data.getMonth()];
+  var year = data.getFullYear();
+
+
+  return date + " de "+month+" de "+year;
+
+}
+
+
 function MoldeCarteira(){
 
 	let k =0;
@@ -393,8 +420,8 @@ function MoldeCarteira(){
 													Fone: (67) 3541-1065
 													</Box>
 												</Typography>
-											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
-												Carteira de Sócio Nº: 
+											<Typography align="center" variant="body2" style={{fontSize: "0.88rem"}} color="">
+												Carteira de Sócio Nº: {(arrayCarts[k].numCart)}
 												</Typography>
 											</Grid>
 											</Grid>
@@ -403,44 +430,54 @@ function MoldeCarteira(){
 										</Grid>
 										<Grid container spacing={1}>
 										<Grid item  style={{padding:"2px"}}>
-											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
+											<Typography align="center" variant="body2" style={{fontSize: "0.88rem"}} color="">
 													Nome: {arrayCarts[k].nome + " "+arrayCarts[k].sname}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 										<Grid item style={{padding:"2px"}}>
-											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
-												Função: 
+											<Typography align="center" variant="body2" style={{fontSize: "0.88rem"}} color="">
+												Função: {(arrayCarts[k].funcao)}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={1}>
-										<Grid item xs={12} sm={6} style={{padding:"2px"}}>
-											<Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
-												Data de Admissão: 
-											</Typography>
-										</Grid>
-										<Grid item xs={12} sm={6} style={{padding:"2px"}}>
-											<Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
-												Válida até: 
-											</Typography>
-										</Grid>
+											<Grid item xs={12} sm={4} style={{padding:"2px"}}>
+												<Typography  variant="body2" style={{fontSize: "0.88rem",letterSpacing:"-1px"}} color="">
+													Data de Admissão:
+												</Typography>
+											</Grid>
+											<Grid item xs={12} sm={2} style={{padding:"2px",marginLeft:"-3%"}}>
+												<Typography  variant="body2" style={{fontSize: "0.88rem"}} color="">
+													 {dataNasc(arrayCarts[k].dataAdm)}
+												</Typography>
+											</Grid>
+											<Grid item xs={12} sm={4} style={{padding:"2px",marginLeft:"14%"}}>
+												<Typography  variant="body2" style={{fontSize: "0.88rem",letterSpacing:"-1px"}} color="">
+													Válida até: 
+												</Typography>
+											</Grid>
+											<Grid item xs={12} sm={2} style={{padding:"2px",marginLeft:"-17%"}}>
+												<Typography  variant="body2" style={{fontSize: "0.88rem"}} color="">
+													 {dataNasc(arrayCarts[k].dataValid)}
+												</Typography>
+											</Grid>
 										</Grid>
 										<Grid container spacing={2} >
 										<Grid item xs={12} style={{padding:"6px"}}>
 											<Typography align="right" style={{fontSize: "0.68rem"}} variant="body2" color="">
-												Bataguassu 12 de Outubro de 2020
+												Bataguassu, {formatar()}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={7}>
-										<Grid item xs={12} style={{padding:"22px"}}>
+										<Grid item xs={12} style={{padding:"31px"}}>
 											<Typography align="center" style={{fontSize: "0.68rem"}} variant="body2" color="">
 												____________________
 												
 											</Typography>
-											<Typography align="center"  style={{fontSize: "0.68rem"}} variant="body2" color="">
+											<Typography align="center"  style={{fontSize: "0.48rem"}} variant="body2" color="">
 												
 												Presidente
 											</Typography>

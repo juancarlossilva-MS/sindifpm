@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import fire from '../../config/fire-config';
+import fire from '../config/fire-config';
 
 import React, { useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
@@ -15,10 +15,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-
-
-
 
 function Cadastro() {
 

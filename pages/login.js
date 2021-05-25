@@ -4,10 +4,9 @@ import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
 import React, { useState} from 'react';
-import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
+import {Avatar,Container , Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import {makeStyles}  from '@material-ui/core/styles';
 
 function Copyright() {
   return (
@@ -85,20 +84,20 @@ const onChangeHandler = event => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+       
+           <img className={classes.img} style={{ maxWidth: '62%', minWidth: '62%'}} alt="complex" src="logo.jpg" />
+
         <Typography component="h1" variant="h5">
-          Sign in
+          SINDIFPM
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
             required
-            fullWidth
+             fullWidth
             id="email"
-            label="Email Address"
+            label="Endereço de E-Mail"
             name="email"
             autoComplete="email"
             autoFocus
@@ -109,7 +108,7 @@ const onChangeHandler = event => {
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="Senha"
             label="Password"
             type="password"
             id="password"
@@ -130,7 +129,7 @@ const onChangeHandler = event => {
           >
             Sign In
           </Button>
-          <Grid container>
+          <Grid style={{display:"none"}} container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Esqueceu a Senha?

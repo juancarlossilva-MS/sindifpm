@@ -263,10 +263,8 @@ function GerarCarteiras(){
 
 
 async function GerarUmaCarteira(row){
-	cartsCheck[row.cpf] = true;
+	
 	setFlag(true);
-	console.log(flag);
-     console.log(cartsCheck);
      await setArrayCarts(prev=>[...prev,row])
 	 	
 }

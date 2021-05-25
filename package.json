@@ -21,13 +21,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.14.0",
     "react-google-font-loader": "^1.1.0",
-    "react-native-web": "^0.13.14",
-    "react-native-web-webview": "^1.0.2",
     "react-to-pdf": "0.0.13",
     "xhr2": "^0.2.1"
   },
-  "devDependencies": {
-    "babel-plugin-react-native-web": "^0.13.14"
-  },
+  "devDependencies": {},
   "license": "MIT"
 }

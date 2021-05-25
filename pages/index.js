@@ -12,9 +12,7 @@ import Header from "./components/Header";
 import fire from '../config/fire-config';
 
 const PrivatePage = ({ user }) => {
-  const [blogs, setBlogs] = useState([]);
-  const [urlAtual, setUrlAtual] = useState("");
-  const [canal, setCanal] = useState("");
+
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -24,23 +22,7 @@ const PrivatePage = ({ user }) => {
   const handleClose = () => {
     setOpen(false);
   };
-useEffect(() => {
-    fire.database()
-      .ref('infoAtual')
-      .once("value").then((snap) => {
-        
-        /*const blogs = snap.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        console.log('here');
-        var res = (snap.val())
-        setCanal(res.canal);
-        setUrlAtual(res.url);
-      
-       // setBlogs(blogs);*/
-      });
-  }, []);
+
 
   function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -77,82 +59,7 @@ useEffect(() => {
     setValue(event.target.value);
   };
 
-  const salvarNovasInfos = () => {
 
-    
-  }
-
-  class AbrirModalChangeServer extends Component {
-      render(){
-
-          return(
-              <div>
-                <Modal
-                      open={open}
-                      onClose={handleClose}
-                     
-                    >
-                     <div style={modalStyle}  className={classes2.paper}>
-                            <h2 id="simple-modal-title">Selecione a Plataforma</h2>
-                            <FormControl component="fieldset">
-                              <FormLabel component="legend">Plataforma</FormLabel>
-                              <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-                                <FormControlLabel value="youtube" control={<Radio />} label={<YouTubeIcon/>} />
-                                <FormControlLabel value="facebook" control={<Radio />} label={<FacebookIcon/>} />
-                              
-                              </RadioGroup>
-                              <TextField id="outlined-basic" label="URL" variant="outlined" />
-                              <Button variant="contained" onClick={salvarNovasInfos} color="primary" size="small" className={classes.button} startIcon={<SaveIcon />}>
-                                  Save
-                                </Button>
-                            </FormControl>
-                          </div>
-                    </Modal>
-              </div>
-
-          )
-
-      }
-
-  }
-
-  class InfosAtuais extends Component {
-    render(){
-      if(canal == "youtube"){
-        return(
-          <div >
-              
-              <Typography variant="h6" className={classes.title}>
-                  Informações atuais da NSLIVE
-                </Typography>
-              
-               <YouTubeIcon color="secondary" style={{fontSize:"7rem",height:"55%"}}/>
-               <Typography variant="h6" className={classes.title}>URL ATUAL: {urlAtual}</Typography>
-               <Button onClick={handleOpen} color="inherit">Alterar</Button>
-
-          </div>
-    
-    
-        )
-
-      }else if(canal == "youtube"){
-        return(
-          <div>
-              <h1 >Informações atuais da NSLIVE</h1>
-              <h4>{urlAtual}</h4>
-              <Icon color="primary" style={{fontSize:"10rem"}}>facebook</Icon>
-
-          </div>
-        
-    
-        )
-
-      }else{
-        return (<div></div>);
-      }
-   }
-
-  }
   
   const useStyles = makeStyles((theme) => ({
     root: {

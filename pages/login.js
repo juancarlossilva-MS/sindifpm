@@ -4,8 +4,9 @@ import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
 import React, { useState} from 'react';
-import {Avatar,Container , Button, makeStyles,CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
+import {Avatar,Container , Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import {makeStyles}  from '@material-ui/core/styles';
 
 function Copyright() {
   return (

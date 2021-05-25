@@ -262,15 +262,15 @@ function GerarCarteiras(){
 }
 
 
-function GerarUmaCarteira(row){
-	
-	console.log(row);
-	
+async function GerarUmaCarteira(row){
 	cartsCheck[row.cpf] = true;
+	setFlag(true);
+	console.log(flag);
      console.log(cartsCheck);
-     setArrayCarts(prev=>[...prev,row]);
-	GerarCarteiras();
+     await setArrayCarts(prev=>[...prev,row])
+	 	
 }
+
 
 
 function printDocument(){
@@ -295,6 +295,8 @@ function printDocument(){
 				setExibe(false);
 				setOverflow("auto");
 				setFiltro("");
+				setArrayCarts([]);
+
 			}else{
 				pdf.addPage();
 			}
@@ -305,6 +307,7 @@ function printDocument(){
 }
 const [selAll, setSelAll] = React.useState(true);
 	const ref = React.createRef();
+	const refBC = React.createRef();
 
 function SelAll(){
   rows2.map((row) => {
@@ -383,9 +386,17 @@ function formatar() {
 
 }
 
+const [flag, setFlag] = React.useState(false);
 
 function MoldeCarteira(){
-
+	if(flag){
+		useEffect(() => {
+		GerarCarteiras()
+		setFlag(false);
+		setArrayCarts([]);
+	  }, []); // <-- empty array means 'run once'
+	}
+	
 	let k =0;
 	const row = [];
 	for(k=0;k<arrayCarts.length;k++){
@@ -668,8 +679,9 @@ const [exibeCarts, setExibeCarts] = useState(false);
 
 
           </Grid>
+		  <Button ref={refBC} onClick={GerarCarteiras}></Button>
           </div>
-		 {arrayCarts.length > 0 && !openmul &&
+		 {arrayCarts.length > 0 &&
 			<div>
 				<br/>
 			  <br/>

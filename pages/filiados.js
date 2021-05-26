@@ -10,7 +10,7 @@ import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,Inp
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-import {Facebook ,DoneAll, Close, GroupAdd, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp,
+import {Facebook ,DoneAll, Close, GroupAdd, Edit, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp,
 Print
 } from '@material-ui/icons/';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -185,7 +185,8 @@ function Row(props) {
         <TableCell align="right">{row.numCart}</TableCell>
         <TableCell align="right">{row.dataValid}</TableCell>
         { openmul ? 
-        <TableCell align="right"><Button type="button" onClick={() => {GerarUmaCarteira(row)}}><Print/></Button></TableCell>
+        <TableCell align="right"><Button type="button" onClick={() => {GerarUmaCarteira(row)}}><Print/></Button>
+        <Button type="button" onClick={() => {router.push({pathname:"/editfiliado", query:{cpf:row.cpf}})}}><Edit/></Button></TableCell>
          :   <Checkbox key={row.cpf}  checked={cartsCheck[row.cpf]}  value={JSON.stringify(row)} onClick={addArrayCarts} />}
       </TableRow>
       <TableRow>

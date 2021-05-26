@@ -28,7 +28,7 @@ const styles = theme => ({
   }
 });
 
-function logout async () => {
+const logout = async () => {
 	const router = useRouter();
 
 	 const response = await fetch("api/sessions", {

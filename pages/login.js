@@ -100,7 +100,7 @@ const [filtro, setFiltro] = useState("");
     }
     <Container component="main" maxWidth="xs" style={{filter:filtro }}>
       <CssBaseline />
-      <div className={classes.paper}>
+      <div className={classes.paper} style={{backgroundColor: "#fafafa"}}>
        
            <img className={classes.img} style={{ maxWidth: '62%', minWidth: '62%'}} alt="complex" src="logo.jpg" />
 

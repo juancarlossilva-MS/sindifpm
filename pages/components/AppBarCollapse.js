@@ -8,6 +8,7 @@ import React from "react";
 import { Button, MenuItem } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import ButtonAppBarCollapse from "./ButtonAppBarCollapse";
+import { useRouter } from 'next/router';
 
 const styles = theme => ({
   root: {
@@ -27,15 +28,29 @@ const styles = theme => ({
   }
 });
 
+function logout async () => {
+	const router = useRouter();
+
+	 const response = await fetch("api/sessions", {
+		method: "LOGOUT",
+    });
+    console.log(response);
+    if (response.ok) {
+      return router.push("/login");
+    }
+
+  };
+
+
 const AppBarCollapse = props => (
   <div className={props.classes.root}>
     <ButtonAppBarCollapse>
-      <MenuItem>Login</MenuItem>
-      <MenuItem>Signup</MenuItem>
+      <MenuItem></MenuItem>
+      <MenuItem onClick={logout}>Sair</MenuItem>
     </ButtonAppBarCollapse>
     <div className={props.classes.buttonBar} id="appbar-collapse">
-      <Button color="inherit">Login</Button>
-      <Button color="inherit">Signup</Button>
+      <Button color="inherit"></Button>
+      <Button onClick={logout} color="inherit">Sair</Button>
     </div>
   </div>
 );

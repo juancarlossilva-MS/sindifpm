@@ -14,6 +14,12 @@ export default withIronSession(
 
       return res.status(403).send("");
     }
+	if (req.method === "LOGOUT") {
+      
+        req.session.set("user", null);
+        await req.session.save();
+        return res.status(201).send("");
+    }
 
     return res.status(404).send("");
   },

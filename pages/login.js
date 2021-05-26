@@ -3,10 +3,12 @@ import  Link2 from 'next/link';
 import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import {Avatar,Container , Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {makeStyles}  from '@material-ui/core/styles';
+import {Form, FormGroup, Label, Input } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Copyright() {
   return (
@@ -80,6 +82,10 @@ const onChangeHandler = event => {
   } 
 };
 
+
+
+  
+  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -90,58 +96,40 @@ const onChangeHandler = event => {
         <Typography component="h1" variant="h5">
           SINDIFPM
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-             fullWidth
-            id="email"
-            label="Endereço de E-Mail"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={event => onChangeHandler(event)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="Senha"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={event => onChangeHandler(event)}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handlerSubmit}
-          >
-            Sign In
-          </Button>
-          <Grid style={{display:"none"}} container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueceu a Senha?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link2 href="/Controle/cadastro" variant="body2">
-                {"Ainda não tem conta? Cadastre-se"}
-              </Link2>
-            </Grid>
-          </Grid>
-        </form>
+      
+          <Form>
+			  <FormGroup>
+				<Label for="exampleEmail">Email</Label>
+				<Input  onChange={event => onChangeHandler(event)} type="email" name="email" id="exampleEmail" placeholder="Insira seu E-mail" />
+			  </FormGroup>
+			  <FormGroup>
+				<Label for="examplePassword">Password</Label>
+				<Input  onChange={event => onChangeHandler(event)} type="password" name="password" id="examplePassword" placeholder="Insira sua senha" />
+			  </FormGroup>
+			  <br/><br/><br/>
+			  <Button
+				type="submit"
+				fullWidth
+				variant="contained"
+				color="primary"
+				className={classes.submit}
+				onClick={handlerSubmit}
+			  >
+				Sign In
+			  </Button>
+			  <Grid style={{display:"none"}} container>
+				<Grid item xs>
+				  <Link href="#" variant="body2">
+					Esqueceu a Senha?
+				  </Link>
+				</Grid>
+				<Grid item>
+				  <Link2 href="/Controle/cadastro" variant="body2">
+					{"Ainda não tem conta? Cadastre-se"}
+				  </Link2>
+				</Grid>
+			  </Grid>
+        </Form>
       </div>
       <Box mt={8}>
         <Copyright />

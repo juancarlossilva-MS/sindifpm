@@ -28,21 +28,25 @@ const styles = theme => ({
   }
 });
 
-const logout = async () => {
-	const router = useRouter();
-
-	 const response = await fetch("api/sessions", {
-		method: "LOGOUT",
-    });
-    console.log(response);
-    if (response.ok) {
-      return router.push("/login");
-    }
-
-  };
 
 
-const AppBarCollapse = props => (
+function AppBarCollapse(props){
+      const router = useRouter();
+
+  const logout = async () => {
+     const response = await fetch("/api/sessions", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+      });
+      console.log(response);
+  
+      if (response.ok) {
+        return router.push("/login");
+      }
+  
+    };
+  
+  return(
   <div className={props.classes.root}>
     <ButtonAppBarCollapse>
       <MenuItem></MenuItem>
@@ -53,6 +57,6 @@ const AppBarCollapse = props => (
       <Button onClick={logout} color="inherit">Sair</Button>
     </div>
   </div>
-);
+)}
 
 export default withStyles(styles)(AppBarCollapse);

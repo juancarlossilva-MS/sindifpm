@@ -4,6 +4,7 @@ import { withIronSession } from "next-iron-session";
 export default withIronSession(
   async (req, res) => {
     if (req.method === "POST") {
+
       const { email, password } = req.body;
         
       if (email && password) {
@@ -14,7 +15,7 @@ export default withIronSession(
 
       return res.status(403).send("");
     }
-	if (req.method === "LOGOUT") {
+	if (req.method === "DELETE") {
       
         req.session.set("user", null);
         await req.session.save();

@@ -4,7 +4,8 @@ import fire from '../config/fire-config';
 import { useRouter } from 'next/router';
 
 import React, { useState, useEffect} from 'react';
-import {Avatar,Container , Button, CssBaseline, TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
+import {Avatar,Container , Button, CssBaseline, LinearProgress,
+  TextField, FormControlLabel, Checkbox,Link ,Grid,Box, Typography} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {makeStyles}  from '@material-ui/core/styles';
 import {Form, FormGroup, Label, Input } from 'reactstrap';
@@ -49,6 +50,9 @@ function Login() {
   const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const handlerSubmit = async (e) => {
+  setExibe(true);
+  setFiltro("blur(5px)");
+
   e.preventDefault();
   fire.auth().signInWithEmailAndPassword(email, password)
   .then(async(e) => {
@@ -82,12 +86,19 @@ const onChangeHandler = event => {
   } 
 };
 
-
+const [exibe, setExibe] = useState(false); 
+const [filtro, setFiltro] = useState(""); 
 
   
   
   return (
-    <Container component="main" maxWidth="xs">
+        <div >
+
+    {exibe &&
+      <LinearProgress style={{marginTop: "27%",marginBottom: "-33%"}}/>
+      
+    }
+    <Container component="main" maxWidth="xs" style={{filter:filtro }}>
       <CssBaseline />
       <div className={classes.paper}>
        
@@ -135,6 +146,8 @@ const onChangeHandler = event => {
         <Copyright />
       </Box>
     </Container>
+     </div>
+
   );
 }
 

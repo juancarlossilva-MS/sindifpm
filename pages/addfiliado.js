@@ -185,19 +185,19 @@ const FormAddDep = () => (
         <Grid container  alignItems="center" spacing={4}>  
                   
             <Grid item xs={12} sm={4}> 
-            <TextField required style={{width:"90%" }} fullWidth type="text"  variant="outlined" id="nomeComp" label="Nome Completo"  
+            <TextField required style={{width:"90%" }} fullWidth type="text"  variant="standard" id="nomeComp" label="Nome Completo"  
              onChange={e => nomeComp = e.target.value}
 			 autoFocus
 			 defaultValue={nomeComp}
             /></Grid>
             <Grid item xs={12} sm={4}> 
-            <TextField required style={{width:"90%" }} fullWidth variant="outlined"  id="parentesco" label="Grau de Parentesco"  
+            <TextField required style={{width:"90%" }} fullWidth variant="standard"  id="parentesco" label="Grau de Parentesco"  
             onChange={e => parentesco = e.target.value}
             /></Grid>
 
             <Grid item xs={12} sm={4}> 
             <TextField
-              variant="outlined" 
+              variant="standard" 
                     id="date"
                     style={{width:"90%" }} fullWidth
                     label="Data de Nascimento"
@@ -212,15 +212,14 @@ const FormAddDep = () => (
             </Grid>
           
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="outlined"  label="RG obs: apenas numeros" defaultValue="" 
-     
-			onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) rgDep = event.target.value}}
+            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="standard"  label="RG obs: apenas numeros" defaultValue="" 
+              onChange={(event) => { rgDep = ((event.target.value).replace(/\D/g, ''))}}
 
             /></Grid>
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF obs: apenas numeros" defaultValue="" 
+            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: apenas numeros" defaultValue="" 
             
-			onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) cpfDep = event.target.value}}
+            onChange={(event) => { cpfDep = ((event.target.value).replace(/\D/g, ''))}}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
                 <Button onClick={atualizaTabelaDep} style={{color:"green"}}>
@@ -295,7 +294,7 @@ class AddDependentes extends Component {
 
   function salvarFiliado() {
 	  console.log(cpf);
-   /* fire.database().ref('filiados/'+cpf ).set({
+   fire.database().ref('filiados/'+cpf ).set({
 		nome:name,
 		sname:sname,
 		dataNasc:dataNasc,
@@ -319,7 +318,7 @@ class AddDependentes extends Component {
 			});
 		});
 	}
-	router.push("/filiados");*/
+	router.push("/filiados");
   }
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -385,17 +384,17 @@ class AddDependentes extends Component {
               <Grid item  xs={12} sm={8}> 
               <TextField required  
               onChange={e => setName(e.target.value)}
-              style={{width:"90%" }} fullWidth  variant="outlined" id="nome" label="Nome" defaultValue="" />
+              style={{width:"90%" }} fullWidth  variant="standard" id="nome" label="Nome" defaultValue="" />
               
               </Grid>
               <Grid item xs={12} sm={8}> 
-              <TextField required style={{width:"90%" }} fullWidth variant="outlined"  id="sobrenome" label="Sobrenome" defaultValue="" 
+              <TextField required style={{width:"90%" }} fullWidth variant="standard"  id="sobrenome" label="Sobrenome" defaultValue="" 
               onChange={e => setSname(e.target.value)}
               /></Grid>
 
               <Grid item xs={12} sm={6}> 
               <TextField
-                variant="outlined" 
+                variant="standard" 
                       id="date"
                       style={{width:"90%" }} fullWidth
                       label="Data de Nascimento"
@@ -413,7 +412,7 @@ class AddDependentes extends Component {
                       id="admissao"
                       style={{width:"90%" }} fullWidth
                       label="Data de Admissão"
-                      variant="outlined" 
+                      variant="standard" 
                       type="date"
                       defaultValue="2017-05-24"
                       onChange={e => setDataAdm(e.target.value)}
@@ -424,7 +423,7 @@ class AddDependentes extends Component {
                     />
               </Grid>
               <Grid item xs={12}  sm={4}>
-              <TextField required id="funcao" style={{width:"90%" }} fullWidth variant="outlined"  label="Função" defaultValue="" 
+              <TextField required id="funcao" style={{width:"90%" }} fullWidth variant="standard"  label="Função" defaultValue="" 
               onChange={e => setFuncao(e.target.value)}
               /></Grid>
               
@@ -434,7 +433,7 @@ class AddDependentes extends Component {
                       label="Validade da Carteira"
                       type="date"
                       style={{width:"90%" }} fullWidth
-                      variant="outlined" 
+                      variant="standard" 
                       defaultValue="2017-05-24"
                       onChange={e => setDataValid(e.target.value)}
                       className={classes.textField}
@@ -445,27 +444,27 @@ class AddDependentes extends Component {
               </Grid>
              
               <Grid item xs={12}  sm={4}>
-                <TextField required id="nomePai" style={{width:"90%" }} fullWidth variant="outlined"  label="Nome do Pai" defaultValue="" 
+                <TextField required id="nomePai" style={{width:"90%" }} fullWidth variant="standard"  label="Nome do Pai" defaultValue="" 
                 onChange={e => setNomePai(e.target.value)}
                 /></Grid>
               <Grid item xs={12}  sm={4}>
                 
-              <TextField required id="nomeMar" style={{width:"90%" }} fullWidth variant="outlined" label="Nome da Mãe" defaultValue=""
+              <TextField required id="nomeMar" style={{width:"90%" }} fullWidth variant="standard" label="Nome da Mãe" defaultValue=""
               onChange={e => setNomeMae(e.target.value)}
               /></Grid>
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="rg" label="RG  obs: Apenas Números" style={{width:"90%" }} pattern=" 0+\.[0-9]*[1-9][0-9]*$" 
-			  onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) setRg(event.target.value)}}
-			  fullWidth variant="outlined" type="number" step="1" 
+              <TextField required id="rg" label="RG  obs: Apenas Números" style={{width:"90%" }}  
+                onChange={(event) => { setRg((event.target.value).replace(/\D/g, ''))}}
+                fullWidth variant="standard" 
               /></Grid>
             
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" type="number" step="1" label="CPF obs: Apenas Números"  
-              onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) setCpf(event.target.value)}}
+              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: Apenas Números"  
+              onChange={(event) => {  setCpf((event.target.value).replace(/\D/g, ''))}}
 			  
               /></Grid>
               <Grid item xs={12}  sm={2}> 
-              <TextField required id="numSocio"  variant="outlined" label="Carteira Nº" defaultValue="" 
+              <TextField required id="numSocio"  variant="standard" label="Carteira Nº" defaultValue="" 
               onChange={e => setNumCart(e.target.value)}
               /></Grid>
              

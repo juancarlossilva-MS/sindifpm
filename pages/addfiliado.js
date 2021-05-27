@@ -212,12 +212,15 @@ const FormAddDep = () => (
             </Grid>
           
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="outlined"  label="RG" defaultValue="" 
-            onChange={e => rgDep = e.target.value}
+            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="outlined"  label="RG obs: apenas numeros" defaultValue="" 
+     
+			onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) rgDep = event.target.value}}
+
             /></Grid>
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF" defaultValue="" 
-            onChange={e => cpfDep = e.target.value}
+            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF obs: apenas numeros" defaultValue="" 
+            
+			onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) cpfDep = event.target.value}}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
                 <Button onClick={atualizaTabelaDep} style={{color:"green"}}>
@@ -291,7 +294,8 @@ class AddDependentes extends Component {
   const router = useRouter()
 
   function salvarFiliado() {
-    fire.database().ref('filiados/'+cpf ).set({
+	  console.log(cpf);
+   /* fire.database().ref('filiados/'+cpf ).set({
 		nome:name,
 		sname:sname,
 		dataNasc:dataNasc,
@@ -315,7 +319,7 @@ class AddDependentes extends Component {
 			});
 		});
 	}
-	router.push("/filiados");
+	router.push("/filiados");*/
   }
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -450,13 +454,15 @@ class AddDependentes extends Component {
               onChange={e => setNomeMae(e.target.value)}
               /></Grid>
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="rg" label="RG" style={{width:"90%" }} fullWidth variant="outlined" type="number" defaultValue=""
-              onChange={e => setRg(e.target.value)}
+              <TextField required id="rg" label="RG  obs: Apenas Números" style={{width:"90%" }} pattern=" 0+\.[0-9]*[1-9][0-9]*$" 
+			  onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) setRg(event.target.value)}}
+			  fullWidth variant="outlined" type="number" step="1" 
               /></Grid>
             
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF" defaultValue="" 
-              onChange={e => setCpf(e.target.value)}
+              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" type="number" step="1" label="CPF obs: Apenas Números"  
+              onKeyPress={(event) => {if(event.charCode >= 48 && event.charCode <= 57) setCpf(event.target.value)}}
+			  
               /></Grid>
               <Grid item xs={12}  sm={2}> 
               <TextField required id="numSocio"  variant="outlined" label="Carteira Nº" defaultValue="" 

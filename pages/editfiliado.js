@@ -40,11 +40,9 @@ useEffect(() => {
           id: doc.id,
           ...doc.data()
         }));*/
-        console.log('here');
+       
         var res = (snap.val())       
-         setName(res.nome);
-
-        
+         setName(res.nome);       
         setSname(res.sname);
         setDataNasc(res.dataNasc);
         setDataAdm(res.dataAdm);
@@ -55,7 +53,32 @@ useEffect(() => {
         setRg(res.rg);
         setCpf(res.cpf);
         setNumCart(res.numCart);
-        console.log(snap)    
+
+         snap.forEach(function(childSnapshot) {
+			 //console.log(childSnapshot);
+			  // key will be "ada" the first time and "alan" the second time
+			  var key = childSnapshot.key;
+			  if(key == "dependentes"){
+				  childSnapshot.forEach(function(deps) {
+								let dep = deps.val();
+						console.log(dep)
+						let parentesco = dep.parentesco;
+						let dataNascDep = dep.dataNasc;
+						let rgDep = dep.rg;
+						let cpfDep = dep.cpf;
+						let nomeComp = dep.nomeComp;
+						
+						
+						var newDep = {nomeComp,parentesco, dataNascDep, rgDep, cpfDep};
+						setRows(prev => [...prev, newDep]);
+				  });
+			  }
+			  
+			  // childData will be the actual contents of the child
+			//  var childData = childSnapshot.val();	
+			  //console.log(childSnapshot.val());
+
+		  });  
         //  res.dependentes.map( (dep) => (console.log(dep))
           
        // );
@@ -101,7 +124,7 @@ const handleRemoveItem = (selectedRow) => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map((row) => (
+                      {rows.map((row) => ( 
                         <TableRow key={row.nomeComp}  >
                           <TableCell component="th" scope="row">
                             {row.nomeComp}
@@ -234,11 +257,11 @@ const FormAddDep = () => (
             </Grid>
           
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="outlined"  label="RG" defaultValue="" 
+            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="outlined"  label="RG"  
             onChange={e => rgDep = e.target.value}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF" defaultValue="" 
+            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF"  
             onChange={e => cpfDep = e.target.value}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
@@ -258,7 +281,7 @@ const FormAddDep = () => (
 class AddDependentes extends Component {
 	
     render(){
-		console.log("render")
+		
 		
       if(open){
       return(
@@ -383,7 +406,7 @@ class AddDependentes extends Component {
 
   
  const classes = useStyles();
-  console.log("pow"+name)
+
     return(
   <div style={{overflow:"auto"}}>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
@@ -418,7 +441,6 @@ class AddDependentes extends Component {
                       style={{width:"90%" }} fullWidth
                       label="Data de Nascimento"
                       type="date"
-                      defaultValue="2017-05-24"
                       onChange={e => setDataNasc(e.target.value)}
                       value={dataNasc}
                       className={classes.textField}
@@ -434,7 +456,6 @@ class AddDependentes extends Component {
                       label="Data de Admissão"
                       variant="outlined" 
                       type="date"
-                      defaultValue="2017-05-24"
                       onChange={e => setDataAdm(e.target.value)}
                       value={dataAdm}
                       className={classes.textField}
@@ -444,7 +465,7 @@ class AddDependentes extends Component {
                     />
               </Grid>
               <Grid item xs={12}  sm={4}>
-              <TextField required id="funcao" style={{width:"90%" }} fullWidth variant="outlined"  label="Função" defaultValue="" 
+              <TextField required id="funcao" style={{width:"90%" }} fullWidth variant="outlined"  label="Função"  
               onChange={e => setFuncao(e.target.value)} value={funcao}
               /></Grid>
               
@@ -455,7 +476,7 @@ class AddDependentes extends Component {
                       type="date"
                       style={{width:"90%" }} fullWidth
                       variant="outlined" 
-                      defaultValue="2017-05-24"
+                      
                       onChange={e => setDataValid(e.target.value)}
                       value={dataValid}
                       className={classes.textField}
@@ -466,25 +487,25 @@ class AddDependentes extends Component {
               </Grid>
              
               <Grid item xs={12}  sm={4}>
-                <TextField required id="nomePai" style={{width:"90%" }} fullWidth variant="outlined"  label="Nome do Pai" defaultValue="" 
+                <TextField required id="nomePai" style={{width:"90%" }} fullWidth variant="outlined"  label="Nome do Pai"  
                 onChange={e => setNomePai(e.target.value)} value={nomePai}
                 /></Grid>
               <Grid item xs={12}  sm={4}>
                 
-              <TextField required id="nomeMar" style={{width:"90%" }} fullWidth variant="outlined" label="Nome da Mãe" defaultValue=""
+              <TextField required id="nomeMar" style={{width:"90%" }} fullWidth variant="outlined" label="Nome da Mãe" 
               onChange={e => setNomeMae(e.target.value)} value={nomeMae}
               /></Grid>
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="rg" label="RG" style={{width:"90%" }} fullWidth variant="outlined" type="number" defaultValue=""
+              <TextField required id="rg" label="RG" style={{width:"90%" }} fullWidth variant="outlined" type="number" 
               onChange={e => setRg(e.target.value)} value={rg}
               /></Grid>
             
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF" defaultValue="" 
+              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF"  
               onChange={e => setCpf(e.target.value)} value={cpf}
               /></Grid>
               <Grid item xs={12}  sm={2}> 
-              <TextField required id="numSocio"  variant="outlined" label="Carteira Nº" defaultValue="" 
+              <TextField required id="numSocio"  variant="outlined" label="Carteira Nº"  
               onChange={e => setNumCart(e.target.value)} value={numCart}
               /></Grid>
              

@@ -6,11 +6,13 @@ import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,Inp
     IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography,
 	CardContent, LinearProgress, ButtonBase, CardActionArea, Card
 	} from '@material-ui/core';
+import {Label, Input } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-import {Facebook ,DoneAll, Close, GroupAdd, Edit, Save,YouTube,AssignmentInd, People,KeyboardArrowDown,KeyboardArrowUp,
+import {Facebook ,DoneAll, Close, GroupAdd, Edit, Save,YouTube,AssignmentInd, Delete, People,KeyboardArrowDown,KeyboardArrowUp,
 Print
 } from '@material-ui/icons/';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -35,7 +37,7 @@ const PrivatePage = ({ user }) => {
 useEffect(() => {
     fire.database()
       .ref('filiados')
-      .once("value").then((snap) => {
+      .on("value",(snap) => {
         
         /*const blogs = snap.docs.map(doc => ({
           id: doc.id,
@@ -72,6 +74,7 @@ useEffect(() => {
       top: `${top}%`,
       left: `${left}%`,
       transform: `translate(-${top}%, -${left}%)`,
+	  backgroundColor: "#fafafa"
     };
   }
   
@@ -83,6 +86,7 @@ useEffect(() => {
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+	 
     },
   }));
   const classes2 = useStyles2();
@@ -120,8 +124,11 @@ const [rows2, setRows] = useState([]);
   root: {
     '& > *': {
       borderBottom: 'groove',
+	  maxWidth: "100%"
     },
+	
   },
+  
 });
   
 function createDataFili(nome,sname,cpf,rg,nomeMae,nomePai,numCart,dataNasc,dataAdm,dataValid,funcao,deps) {
@@ -156,6 +163,83 @@ function createDataFili(nome,sname,cpf,rg,nomeMae,nomePai,numCart,dataNasc,dataA
 }
  const router = useRouter();
 
+
+ 
+ 
+function ConfirmarDelete(){
+
+	console.log(cpfToDel);
+	console.log(user.email);
+	console.log(password);
+	fire.auth().signInWithEmailAndPassword(user.email, password)
+	  .then(async(e) => {
+			setRows([]);
+			fire.database().ref('filiados/'+cpfToDel).remove().then(function() {
+						
+					setOpenModal(false);
+				  });
+			
+	  })
+	  .catch((error) => {
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		// ..
+	  });
+}
+function CancelarDelete(){	setOpenModal(false);}
+
+
+const [openModal, setOpenModal] = React.useState(false);
+const [cpfToDel, setCpfToDel] = React.useState();
+let password = "";
+
+
+  
+  class AbrirModalChangeServer extends Component {
+      render(){
+
+          return(
+              <div >
+                <Modal
+                      open={openModal}                     
+                    >
+                     <div style={modalStyle}  className={classes2.paper}>
+                            <h2 id="simple-modal-title">Insira sua senha para confirmar exclusão</h2>
+                            
+							<Input onChange={event => password = (event.target.value)} type="password" name="password" id="examplePassword" placeholder="Insira sua senha" />
+							<br/><br/>
+							<Button
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+								className={classes.submit}
+								onClick={ConfirmarDelete}
+							  >
+								CONFIRMAR EXCLUSÃO
+							  </Button><br/><br/>
+							  <Button
+								fullWidth
+								variant="contained" style={{backgroundColor:"red",color:"#fafafa"}}
+								className={classes.submit}
+								onClick={CancelarDelete}
+							  >
+								Cancelar
+							  </Button>
+						  </div>
+                    </Modal>
+              </div>
+
+          )
+
+      }
+
+  }
+
+
+
+
+
 function Row(props) {
   const { row,index } = props;
   const [open, setOpen] = React.useState(false);
@@ -185,8 +269,13 @@ function Row(props) {
         <TableCell align="right">{row.numCart}</TableCell>
         <TableCell align="right">{row.dataValid}</TableCell>
         { openmul ? 
-        <TableCell align="right"><Button type="button" onClick={() => {GerarUmaCarteira(row)}}><Print/></Button>
-        <Button type="button" onClick={() => {router.push({pathname:"/editfiliado", query:{cpf:row.cpf}})}}><Edit/></Button></TableCell>
+        <TableCell >
+		<div style={{display: "flex",flexDirection: "row"}}>
+			<Button type="button" onClick={() => {GerarUmaCarteira(row)}}><Print/></Button>
+			<Button type="button" onClick={() => {setCpfToDel(row.cpf),setOpenModal(true)}}><Delete/></Button>
+			<Button type="button" onClick={() => {router.push({pathname:"/editfiliado", query:{cpf:row.cpf}})}}><Edit/></Button>
+		</div>
+		</TableCell>
          :   <Checkbox key={row.cpf}  checked={cartsCheck[row.cpf]}  value={JSON.stringify(row)} onClick={addArrayCarts} />}
       </TableRow>
       <TableRow>
@@ -646,7 +735,7 @@ const [exibeCarts, setExibeCarts] = useState(false);
               <Grid item xs={12}></Grid>
 
 
-              <Grid item xs={10} >
+              <Grid item xs={10} style={{maxWidth:"100%"}}>
                 <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
 					  <Table aria-label="collapsible table">
 						<TableHead>
@@ -662,7 +751,7 @@ const [exibeCarts, setExibeCarts] = useState(false);
 							<TableCell align="right">CPF</TableCell>
 							<TableCell align="right">Nº Cart. Sócio</TableCell>
 							<TableCell align="right">Data de Valid.</TableCell>
-							<TableCell align="right">Ações</TableCell>
+							<TableCell >Ações</TableCell>
 
 						  </TableRow>
 						</TableHead>
@@ -680,6 +769,7 @@ const [exibeCarts, setExibeCarts] = useState(false);
           </Grid>
 		  <Button ref={refBC} onClick={GerarCarteiras}></Button>
           </div>
+		  <AbrirModalChangeServer/>
 		 {arrayCarts.length > 0 &&
 			<div>
 				<br/>

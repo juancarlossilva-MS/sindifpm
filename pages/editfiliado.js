@@ -29,10 +29,10 @@ const PrivatePage = ({ user }) => {
 
   const router = useRouter();
 
-let cpfQuery = "";
+const [cpfQuery,setCpfQuery] = useState(router.query.cpf);
+
 useEffect(() => {
-     cpfQuery = router.query.cpf;
-    
+    console.log(cpfQuery);
     fire.database()
       .ref('filiados/'+cpfQuery)
       .once("value").then((snap) => {
@@ -239,14 +239,14 @@ const FormAddDep = () => (
             </Grid>
           
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="standard"  label="RG obs: apenas numeros" defaultValue="" 
-              onChange={(event) => { rgDep = ((event.target.value).replace(/\D/g, ''))}} value={rgDep}
+            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="standard"  label="RG obs: apenas numeros"
+              onChange={(event) =>  rgDep = (event.target.value).replace(/\D/g, '')}
 
             /></Grid>
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: apenas numeros" defaultValue="" 
+            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: apenas numeros" 
             
-            onChange={(event) => { cpfDep = ((event.target.value).replace(/\D/g, ''))}} value={cpfDep}
+            onChange={(event) =>  cpfDep = (event.target.value).replace(/\D/g, '')}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
                 <Button onClick={atualizaTabelaDep} style={{color:"green"}}>
@@ -323,7 +323,9 @@ class AddDependentes extends Component {
     if(cpf == "" || cpf == null){
       alert("VERIFIQUE O CPF DIGITADO!");
     }else{
-        if(cpf != cpfQuery) { fire.database().ref('filiados/'+cpfQuery).remove();}
+		console.log(cpf);
+		console.log(cpfQuery);
+        if(cpf != cpfQuery && cpfQuery != null) { fire.database().ref('filiados/'+cpfQuery).remove();}
             fire.database().ref('filiados/'+cpf ).set({
             nome:name,
             sname:sname,

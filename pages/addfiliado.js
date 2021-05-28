@@ -173,6 +173,7 @@ let dataNascDep = "";
 let rgDep = "";
 let cpfDep = "";
 const [rows, setRows] = useState([]);
+const [fili, setFili] = useState();
 
 let nomeComp = "";
 
@@ -212,12 +213,12 @@ const FormAddDep = () => (
             </Grid>
           
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="standard"  label="RG obs: apenas numeros" defaultValue="" 
+            <TextField required id="rgDep" style={{width:"90%" }} fullWidth  variant="standard"  label="RG obs: apenas numeros"  
               onChange={(event) => { rgDep = ((event.target.value).replace(/\D/g, ''))}}
 
             /></Grid>
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: apenas numeros" defaultValue="" 
+            <TextField required id="cpfDep" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: apenas numeros" 
             
             onChange={(event) => { cpfDep = ((event.target.value).replace(/\D/g, ''))}}
             /></Grid>
@@ -292,23 +293,34 @@ class AddDependentes extends Component {
   };
   const router = useRouter()
 
-  function salvarFiliado() {
+ function selecionaFili(){
 
-    if(cpf == "" || cpf == null){
+    var newFili = {name,sname,dataNasc,dataAdm,funcao,dataValid,nomePai,nomeMae,rg,cpf,numCart}
+    setFili(newFili);
+	salvarFiliado(newFili);
+
+}
+
+
+  
+  function salvarFiliado(newFili) {
+    
+    if(newFili.cpf == "" || newFili.cpf == null){
+		
       alert("VERIFIQUE O CPF DIGITADO!");
     }else{
               fire.database().ref('filiados/'+cpf ).set({
-            nome:name,
-            sname:sname,
-            dataNasc:dataNasc,
-            dataAdm:dataAdm,
-            funcao:funcao,
-            dataValid:dataValid,
-            nomePai:nomePai,
-            nomeMae:nomeMae,
-            rg:rg,
-            cpf:cpf,
-            numCart:numCart
+            nome:newFili.name,
+            sname:newFili.sname,
+            dataNasc:newFili.dataNasc,
+            dataAdm:newFili.dataAdm,
+            funcao:newFili.funcao,
+            dataValid:newFili.dataValid,
+            nomePai:newFili.nomePai,
+            nomeMae:newFili.nomeMae,
+            rg:newFili.rg,
+            cpf:newFili.cpf,
+            numCart:newFili.numCart
             }); 
           if(rows.length > 0){
             rows.map((row) => {
@@ -355,18 +367,22 @@ class AddDependentes extends Component {
     setSelectedDate(date);
   };
 
-  const [name, setName] = useState("");
-  const [sname, setSname] = useState("");
-  const [dataNasc, setDataNasc] = useState("");
-  const [dataAdm, setDataAdm] = useState("");
-  const [funcao, setFuncao] = useState("");
-  const [dataValid, setDataValid] = useState("");
-  const [nomePai, setNomePai] = useState("");
-  const [nomeMae, setNomeMae] = useState("");
-  const [rg, setRg] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [numCart, setNumCart] = useState("");
+  let name = "";
+  let sname = "";
+  let dataNasc = "";
+  let dataAdm = "";
+  let funcao = "";
+  let dataValid = "";
+  let nomePai = "";
+  let nomeMae = "";
+  let rg = "";
+  let cpf = "";
+  let numCart = "";
 
+ const rgChanger = e =>{
+	 rg = (e.target.value).replace(/\D/g, '');
+ } 
+  
   
  const classes = useStyles();
 
@@ -388,13 +404,13 @@ class AddDependentes extends Component {
             
               <Grid item  xs={12} sm={8}> 
               <TextField required  
-              onChange={e => setName(e.target.value)}
-              style={{width:"90%" }} fullWidth  variant="standard" id="nome" label="Nome" defaultValue="" />
+              onChange={e => name = (e.target.value)}
+              style={{width:"90%" }} fullWidth  variant="standard" id="name" label="Nome" defaultValue="" />
               
               </Grid>
               <Grid item xs={12} sm={8}> 
               <TextField required style={{width:"90%" }} fullWidth variant="standard"  id="sobrenome" label="Sobrenome" defaultValue="" 
-              onChange={e => setSname(e.target.value)}
+              onChange={e => sname = (e.target.value)}
               /></Grid>
 
               <Grid item xs={12} sm={6}> 
@@ -405,7 +421,7 @@ class AddDependentes extends Component {
                       label="Data de Nascimento"
                       type="date"
                       defaultValue="2017-05-24"
-                      onChange={e => setDataNasc(e.target.value)}
+                      onChange={e => dataNasc = (e.target.value)}
                       className={classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -420,7 +436,7 @@ class AddDependentes extends Component {
                       variant="standard" 
                       type="date"
                       defaultValue="2017-05-24"
-                      onChange={e => setDataAdm(e.target.value)}
+                      onChange={e => dataAdm = (e.target.value)}
                       className={classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -429,7 +445,7 @@ class AddDependentes extends Component {
               </Grid>
               <Grid item xs={12}  sm={4}>
               <TextField required id="funcao" style={{width:"90%" }} fullWidth variant="standard"  label="Função" defaultValue="" 
-              onChange={e => setFuncao(e.target.value)}
+              onChange={e => funcao = (e.target.value)}
               /></Grid>
               
               <Grid item xs={12}  sm={4}> 
@@ -440,7 +456,7 @@ class AddDependentes extends Component {
                       style={{width:"90%" }} fullWidth
                       variant="standard" 
                       defaultValue="2017-05-24"
-                      onChange={e => setDataValid(e.target.value)}
+                      onChange={e => dataValid = (e.target.value)}
                       className={classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -450,39 +466,43 @@ class AddDependentes extends Component {
              
               <Grid item xs={12}  sm={4}>
                 <TextField required id="nomePai" style={{width:"90%" }} fullWidth variant="standard"  label="Nome do Pai" defaultValue="" 
-                onChange={e => setNomePai(e.target.value)}
+                onChange={e => nomePai = (e.target.value)}
                 /></Grid>
               <Grid item xs={12}  sm={4}>
                 
-              <TextField required id="nomeMar" style={{width:"90%" }} fullWidth variant="standard" label="Nome da Mãe" defaultValue=""
-              onChange={e => setNomeMae(e.target.value)}
+              <TextField required id="nomeMae" style={{width:"90%" }} fullWidth variant="standard" label="Nome da Mãe" defaultValue=""
+              onChange={e => nomeMae = (e.target.value)}
               /></Grid>
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="rg" label="RG  obs: Apenas Números" style={{width:"90%" }}  
-                onChange={(event) => { setRg((event.target.value).replace(/\D/g, ''))}}
+              <TextField required id="rg" label="RG  obs: Apenas Números" style={{width:"90%" }}
+                onChange={rgChanger} 
                 fullWidth variant="standard" 
               /></Grid>
             
               <Grid item xs={12}  sm={4}> 
               <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: Apenas Números"  
-              onChange={(event) => {  setCpf((event.target.value).replace(/\D/g, ''))}}
+              onChange={(event) =>  cpf = (event.target.value).replace(/\D/g, '')} 
 			  
               /></Grid>
               <Grid item xs={12}  sm={2}> 
               <TextField required id="numSocio"  variant="standard" label="Carteira Nº" defaultValue="" 
-              onChange={e => setNumCart(e.target.value)}
+              onChange={e => numCart = (e.target.value)}
               /></Grid>
              
             </Grid>
                       
               <HeadDep/>
-              <AddDependentes/> 
+			  
+			  {open &&
+			    <FormAddDep/> 
+			  }
+
           
               <Grid item xs={12}   style={{marginTop:"5%"}}>   <TabelaDependentes/></Grid>
               
            
               <Grid item xs={12} sm={4}  >  
-              <Button onClick={salvarFiliado} style={{color:"green"}}>
+              <Button onClick={selecionaFili} style={{color:"green"}}>
                        <Save />
                        <Typography variant="h6"> salvar</Typography>
                 </Button>    

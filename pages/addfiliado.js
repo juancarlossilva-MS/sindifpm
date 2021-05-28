@@ -395,7 +395,6 @@ class AddDependentes extends Component {
 
    <Header/>   
    
-       <form >
           <div style={{margin:"5% 0 0 5%"}}>
           <Grid container  alignItems="flex-start" spacing={2}>  
         
@@ -514,7 +513,6 @@ class AddDependentes extends Component {
 
               </div>
 
-        </form>
 
           
   </div>);

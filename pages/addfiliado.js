@@ -293,33 +293,38 @@ class AddDependentes extends Component {
   const router = useRouter()
 
   function salvarFiliado() {
-	  console.log(cpf);
-   fire.database().ref('filiados/'+cpf ).set({
-		nome:name,
-		sname:sname,
-		dataNasc:dataNasc,
-		dataAdm:dataAdm,
-		funcao:funcao,
-		dataValid:dataValid,
-		nomePai:nomePai,
-		nomeMae:nomeMae,
-		rg:rg,
-		cpf:cpf,
-		numCart:numCart
-    }); 
-	if(rows.length > 0){
-		rows.map((row) => {
-			fire.database().ref('filiados/'+cpf+"/dependentes/"+row.nomeComp).set({
-				nomeComp:row.nomeComp,
-				dataNasc:row.dataNascDep,
-				parentesco:row.parentesco,
-				rg:row.rgDep,
-				cpf:row.cpfDep
-			});
-		});
-	}
-	router.push("/filiados");
+
+    if(cpf == "" || cpf == null){
+      alert("VERIFIQUE O CPF DIGITADO!");
+    }else{
+              fire.database().ref('filiados/'+cpf ).set({
+            nome:name,
+            sname:sname,
+            dataNasc:dataNasc,
+            dataAdm:dataAdm,
+            funcao:funcao,
+            dataValid:dataValid,
+            nomePai:nomePai,
+            nomeMae:nomeMae,
+            rg:rg,
+            cpf:cpf,
+            numCart:numCart
+            }); 
+          if(rows.length > 0){
+            rows.map((row) => {
+              fire.database().ref('filiados/'+cpf+"/dependentes/"+row.nomeComp).set({
+                nomeComp:row.nomeComp,
+                dataNasc:row.dataNascDep,
+                parentesco:row.parentesco,
+                rg:row.rgDep,
+                cpf:row.cpfDep
+              });
+            });
+          }
+          router.push("/filiados");
+    }
   }
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {

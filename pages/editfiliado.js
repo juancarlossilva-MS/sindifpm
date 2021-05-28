@@ -27,13 +27,14 @@ const PrivatePage = ({ user }) => {
     setOpen(false);
   };
 
+  const router = useRouter();
 
-
+let cpfQuery = "";
 useEffect(() => {
-    const cpf = router.query.cpf;
+     cpfQuery = router.query.cpf;
     
     fire.database()
-      .ref('filiados/'+cpf)
+      .ref('filiados/'+cpfQuery)
       .once("value").then((snap) => {
         
         /*const blogs = snap.docs.map(doc => ({
@@ -73,33 +74,14 @@ useEffect(() => {
 						setRows(prev => [...prev, newDep]);
 				  });
 			  }
-			  
-			  // childData will be the actual contents of the child
-			//  var childData = childSnapshot.val();	
-			  //console.log(childSnapshot.val());
-
-		  });  
-        //  res.dependentes.map( (dep) => (console.log(dep))
-          
-       // );
+			});  
         
-       // setBlogs(blogs);
       });
+     
   }, []);
 
   
 
-  /*const handler = (selectedRow) => {
-    console.log("selectedRow:"+ selectedRow.nomeComp)
-    console.log(selectedRow)
-	console.log(rows);
-	for(var i =0; i<rows.length;i++){
-		if(rows[i].nomeComp == selectedRow.nomeComp){
-				console.log("achou "+rows[i].nomeComp);
-				rows.slice(i,1)
-		}
-	}
-}*/
 
 const handleRemoveItem = (selectedRow) => {
    // const name = selectedRow;
@@ -230,19 +212,19 @@ const FormAddDep = () => (
         <Grid container  alignItems="center" spacing={4}>  
                   
             <Grid item xs={12} sm={4}> 
-            <TextField required style={{width:"90%" }} fullWidth type="text"  variant="outlined" id="nomeComp" label="Nome Completo"  
+            <TextField required style={{width:"90%" }} fullWidth type="text"  variant="standard" id="nomeComp" label="Nome Completo"  
              onChange={e => nomeComp = e.target.value}
 			 autoFocus
 			 defaultValue={nomeComp}
             /></Grid>
             <Grid item xs={12} sm={4}> 
-            <TextField required style={{width:"90%" }} fullWidth variant="outlined"  id="parentesco" label="Grau de Parentesco"  
+            <TextField required style={{width:"90%" }} fullWidth variant="standard"  id="parentesco" label="Grau de Parentesco"  
             onChange={e => parentesco = e.target.value}
             /></Grid>
 
             <Grid item xs={12} sm={4}> 
             <TextField
-              variant="outlined" 
+              variant="standard" 
                     id="date"
                     style={{width:"90%" }} fullWidth
                     label="Data de Nascimento"
@@ -257,12 +239,14 @@ const FormAddDep = () => (
             </Grid>
           
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="outlined"  label="RG"  
-            onChange={e => rgDep = e.target.value}
+            <TextField required id="rg" style={{width:"90%" }} fullWidth  variant="standard"  label="RG obs: apenas numeros" defaultValue="" 
+              onChange={(event) => { rgDep = ((event.target.value).replace(/\D/g, ''))}} value={rgDep}
+
             /></Grid>
             <Grid item xs={12}  sm={4}> 
-            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF"  
-            onChange={e => cpfDep = e.target.value}
+            <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: apenas numeros" defaultValue="" 
+            
+            onChange={(event) => { cpfDep = ((event.target.value).replace(/\D/g, ''))}} value={cpfDep}
             /></Grid>
             <Grid item xs={12}  sm={4}> 
                 <Button onClick={atualizaTabelaDep} style={{color:"green"}}>
@@ -333,35 +317,41 @@ class AddDependentes extends Component {
   const handleChange2 = (event) => {
     setValue(event.target.value);
   };
-  const router = useRouter()
 
   function salvarFiliado() {
-    fire.database().ref('filiados/'+cpf ).set({
-		nome:name,
-		sname:sname,
-		dataNasc:dataNasc,
-		dataAdm:dataAdm,
-		funcao:funcao,
-		dataValid:dataValid,
-		nomePai:nomePai,
-		nomeMae:nomeMae,
-		rg:rg,
-		cpf:cpf,
-		numCart:numCart
-    }); 
-	if(rows.length > 0){
-		rows.map((row) => {
-			fire.database().ref('filiados/'+cpf+"/dependentes/"+row.nomeComp).set({
-				nomeComp:row.nomeComp,
-				dataNasc:row.dataNascDep,
-				parentesco:row.parentesco,
-				rg:row.rgDep,
-				cpf:row.cpfDep
-			});
-		});
-	}
-	router.push("/filiados");
+
+    if(cpf == "" || cpf == null){
+      alert("VERIFIQUE O CPF DIGITADO!");
+    }else{
+        if(cpf != cpfQuery) { fire.database().ref('filiados/'+cpfQuery).remove();}
+            fire.database().ref('filiados/'+cpf ).set({
+            nome:name,
+            sname:sname,
+            dataNasc:dataNasc,
+            dataAdm:dataAdm,
+            funcao:funcao,
+            dataValid:dataValid,
+            nomePai:nomePai,
+            nomeMae:nomeMae,
+            rg:rg,
+            cpf:cpf,
+            numCart:numCart
+            }); 
+          if(rows.length > 0){
+            rows.map((row) => {
+              fire.database().ref('filiados/'+cpf+"/dependentes/"+row.nomeComp).set({
+                nomeComp:row.nomeComp,
+                dataNasc:row.dataNascDep,
+                parentesco:row.parentesco,
+                rg:row.rgDep,
+                cpf:row.cpfDep
+              });
+            });
+          }
+          router.push("/filiados");
+    }
   }
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -420,23 +410,23 @@ class AddDependentes extends Component {
           <div style={{margin:"5% 0 0 5%"}}>
           <Grid container  alignItems="flex-start" spacing={2}>  
         
-          <Grid item xs={12}> <Typography variant="h5"> Adicionar Filiado</Typography>
+          <Grid item xs={12}> <Typography variant="h5"> Editar Filiado {name +" "+sname}</Typography>
               </Grid>
             
               <Grid item  xs={12} sm={8}> 
               <TextField required  
               onChange={e => setName(e.target.value)}
-              style={{width:"90%" }} fullWidth  variant="outlined" id="nome" label="Nome" value={name} />
+              style={{width:"90%" }} fullWidth  variant="standard" id="nome" label="Nome" value={name} />
               
               </Grid>
               <Grid item xs={12} sm={8}> 
-              <TextField required style={{width:"90%" }} fullWidth variant="outlined"  id="sobrenome" label="Sobrenome" value={sname} 
+              <TextField required style={{width:"90%" }} fullWidth variant="standard"  id="sobrenome" label="Sobrenome" value={sname} 
               onChange={e => setSname(e.target.value)}
               /></Grid>
 
               <Grid item xs={12} sm={6}> 
               <TextField
-                variant="outlined" 
+                variant="standard" 
                       id="date"
                       style={{width:"90%" }} fullWidth
                       label="Data de Nascimento"
@@ -454,7 +444,7 @@ class AddDependentes extends Component {
                       id="admissao"
                       style={{width:"90%" }} fullWidth
                       label="Data de Admissão"
-                      variant="outlined" 
+                      variant="standard" 
                       type="date"
                       onChange={e => setDataAdm(e.target.value)}
                       value={dataAdm}
@@ -465,7 +455,7 @@ class AddDependentes extends Component {
                     />
               </Grid>
               <Grid item xs={12}  sm={4}>
-              <TextField required id="funcao" style={{width:"90%" }} fullWidth variant="outlined"  label="Função"  
+              <TextField required id="funcao" style={{width:"90%" }} fullWidth variant="standard"  label="Função"  
               onChange={e => setFuncao(e.target.value)} value={funcao}
               /></Grid>
               
@@ -475,7 +465,7 @@ class AddDependentes extends Component {
                       label="Validade da Carteira"
                       type="date"
                       style={{width:"90%" }} fullWidth
-                      variant="outlined" 
+                      variant="standard" 
                       
                       onChange={e => setDataValid(e.target.value)}
                       value={dataValid}
@@ -487,25 +477,25 @@ class AddDependentes extends Component {
               </Grid>
              
               <Grid item xs={12}  sm={4}>
-                <TextField required id="nomePai" style={{width:"90%" }} fullWidth variant="outlined"  label="Nome do Pai"  
+                <TextField required id="nomePai" style={{width:"90%" }} fullWidth variant="standard"  label="Nome do Pai"  
                 onChange={e => setNomePai(e.target.value)} value={nomePai}
                 /></Grid>
               <Grid item xs={12}  sm={4}>
                 
-              <TextField required id="nomeMar" style={{width:"90%" }} fullWidth variant="outlined" label="Nome da Mãe" 
+              <TextField required id="nomeMar" style={{width:"90%" }} fullWidth variant="standard" label="Nome da Mãe" 
               onChange={e => setNomeMae(e.target.value)} value={nomeMae}
               /></Grid>
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="rg" label="RG" style={{width:"90%" }} fullWidth variant="outlined" type="number" 
-              onChange={e => setRg(e.target.value)} value={rg}
+              <TextField required id="rg" style={{width:"90%" }} fullWidth variant="standard" label="RG obs: Apenas Números"  value={rg}
+              onChange={(event) => {  setRg((event.target.value).replace(/\D/g, ''))}}
               /></Grid>
             
               <Grid item xs={12}  sm={4}> 
-              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="outlined" label="CPF"  
-              onChange={e => setCpf(e.target.value)} value={cpf}
+              <TextField required id="cpf" style={{width:"90%" }} fullWidth variant="standard" label="CPF obs: Apenas Números"  value={cpf}
+              onChange={(event) => {  setCpf((event.target.value).replace(/\D/g, ''))}}
               /></Grid>
               <Grid item xs={12}  sm={2}> 
-              <TextField required id="numSocio"  variant="outlined" label="Carteira Nº"  
+              <TextField required id="numSocio"  variant="standard" label="Carteira Nº"  
               onChange={e => setNumCart(e.target.value)} value={numCart}
               /></Grid>
              

@@ -503,23 +503,23 @@ function MoldeCarteira(){
 											<Grid item xs container direction="column" spacing={0} style={{marginTop:"-6%"}}>
 											<Grid item xs>
 												<Typography align="center" style={{
-													fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '33px'}}  variant="h5">
+													fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '28px'}}  variant="h5">
 												S    I    N   D I F P M
 												</Typography>
-												<Typography style={{fontSize: "0.8rem", marginTop:"-5%"}} align="center" variant="h6"  >
+												<Typography style={{fontSize: "0.68rem", marginTop:"-5%"}} align="center" variant="h6"  >
 													<Box lineHeight={1} m={1}>
 													Sindicato dos Funcionários Públicos Municipais de Bataguassu - MS
 													</Box>
 												</Typography>
 												
-												<Typography align="center" variant="caption" color="" style={{    fontSize: "0.54rem"}}>
+												<Typography align="center" variant="caption" color="" style={{    fontSize: "0.45rem"}}>
 													<Box lineHeight={1} m={1} style={{marginRight:"2%",marginLeft:"-1%", marginTop:"-2%"}}>
 													Reg. Min. Trabalho e Emprego 46.000.004428/01-11<br/>
 													Rua Brasilândia, Nº 495 - Centro <br/>
 													Fone: (67) 3541-1065
 													</Box>
 												</Typography>
-											<Typography align="center" variant="body2" style={{fontSize: "0.88rem"}} color="">
+											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
 												Carteira de Sócio Nº: {(arrayCarts[k].numCart)}
 												</Typography>
 											</Grid>
@@ -529,36 +529,36 @@ function MoldeCarteira(){
 										</Grid>
 										<Grid container spacing={1}>
 										<Grid item  style={{padding:"2px"}}>
-											<Typography align="center" variant="body2" style={{fontSize: "0.88rem"}} color="">
+											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
 													Nome: {arrayCarts[k].nome + " "+arrayCarts[k].sname}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 										<Grid item style={{padding:"2px"}}>
-											<Typography align="center" variant="body2" style={{fontSize: "0.88rem"}} color="">
+											<Typography align="center" variant="body2" style={{fontSize: "0.68rem"}} color="">
 												Função: {(arrayCarts[k].funcao)}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item xs={12} sm={4} style={{padding:"2px"}}>
-												<Typography  variant="body2" style={{fontSize: "0.88rem",letterSpacing:"-1px"}} color="">
+												<Typography  variant="body2" style={{fontSize: "0.68rem",letterSpacing:"-1px"}} color="">
 													Data de Admissão:
 												</Typography>
 											</Grid>
 											<Grid item xs={12} sm={2} style={{padding:"2px",marginLeft:"-3%"}}>
-												<Typography  variant="body2" style={{fontSize: "0.88rem"}} color="">
+												<Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
 													 {dataNasc(arrayCarts[k].dataAdm)}
 												</Typography>
 											</Grid>
 											<Grid item xs={12} sm={4} style={{padding:"2px",marginLeft:"14%"}}>
-												<Typography  variant="body2" style={{fontSize: "0.88rem",letterSpacing:"-1px"}} color="">
+												<Typography  variant="body2" style={{fontSize: "0.68rem",letterSpacing:"-1px"}} color="">
 													Válida até: 
 												</Typography>
 											</Grid>
 											<Grid item xs={12} sm={2} style={{padding:"2px",marginLeft:"-17%"}}>
-												<Typography  variant="body2" style={{fontSize: "0.88rem"}} color="">
+												<Typography  variant="body2" style={{fontSize: "0.68rem"}} color="">
 													 {dataNasc(arrayCarts[k].dataValid)}
 												</Typography>
 											</Grid>
@@ -571,7 +571,7 @@ function MoldeCarteira(){
 										</Grid>
 										</Grid>
 										<Grid container spacing={7}>
-										<Grid item xs={12} style={{padding:"31px"}}>
+										<Grid item xs={12} style={{padding:"22px"}}>
 											<Typography align="center" style={{fontSize: "0.68rem"}} variant="body2" color="">
 												____________________
 												
@@ -591,7 +591,7 @@ function MoldeCarteira(){
 									
 										<Grid item xs>
 											<Typography align="center" style={{
-												fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '33px'}}  variant="h5">
+												fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '28px'}}  variant="h5">
 											FILIAÇÃO
 											</Typography>
 											
@@ -600,28 +600,28 @@ function MoldeCarteira(){
 									</Grid>
 									<Grid container spacing={1}>
 										<Grid item  style={{padding:"2px"}}>
-											<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+											<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
 													Pai: {arrayCarts[k].nomePai}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
 														Mãe: {arrayCarts[k].nomeMae}
 												</Typography>
 											</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
 														RG: {arrayCarts[k].rg}
 												</Typography>
 											</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
 														Data de Nacimento: {dataNasc(arrayCarts[k].dataNasc)}
 												</Typography>
 											</Grid>
@@ -629,7 +629,7 @@ function MoldeCarteira(){
 										<Grid container spacing={1}>
 
 											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "1.2rem"}} color="">
+												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
 														CPF: {arrayCarts[k].cpf}
 												</Typography>
 											</Grid>

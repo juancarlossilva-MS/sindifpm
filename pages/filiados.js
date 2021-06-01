@@ -36,7 +36,7 @@ const PrivatePage = ({ user }) => {
   };
 useEffect(() => {
     fire.database()
-      .ref('filiados')
+      .ref('filiados').orderByChild("numCart")
       .on("value",(snap) => {
         
         /*const blogs = snap.docs.map(doc => ({
@@ -52,7 +52,7 @@ useEffect(() => {
 					 const res = createDataFili( fili.nome,fili.sname,fili.cpf,fili.rg,fili.nomeMae,fili.nomePai,
 						fili.numCart,fili.dataNasc,fili.dataAdm,fili.dataValid,fili.funcao,fili.dependentes);
 					 //console.log(res);
-				  setRows(prev=>[...prev,res]);
+				  setRows(prev=>[res,...prev]);
 				  
 				
 
@@ -754,7 +754,7 @@ const [exibeCarts, setExibeCarts] = useState(false);
 							<TableCell align="right">Nome da Mãe</TableCell>
 							<TableCell align="right">RG</TableCell>
 							<TableCell align="right">CPF</TableCell>
-							<TableCell align="right">Nº Cart. Sócio</TableCell>
+							<TableCell align="right" key="numCart" sortDirection="desc">Nº Cart. Sócio</TableCell>
 							<TableCell align="right">Data de Valid.</TableCell>
 							<TableCell >Ações</TableCell>
 

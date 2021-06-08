@@ -8,6 +8,7 @@ import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,Inp
 	} from '@material-ui/core';
 import {Label, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TablePagination from '@material-ui/core/TablePagination';
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -592,37 +593,39 @@ function MoldeCarteira(){
 										<Grid item xs>
 											<Typography align="center" style={{
 												fontWeight: 'bold', fontFamily: '-webkit-body', letterSpacing: '-1px', fontSize: '28px'}}  variant="h5">
-											FILIAÇÃO
+											DEPENDENTES
 											</Typography>
 											
 										</Grid>
 									
 									</Grid>
+							{arrayCarts[k].dps.map((dep) => (
+									<>
 									<Grid container spacing={1}>
 										<Grid item  style={{padding:"2px"}}>
 											<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-													Pai: {arrayCarts[k].nomePai}
+													Nome: {dep.nomeComp}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
 												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														Mãe: {arrayCarts[k].nomeMae}
+														Parentesco: {dep.parentesco}
 												</Typography>
 											</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
 												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														RG: {arrayCarts[k].rg}
+														RG: {dep.rg}
 												</Typography>
 											</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
 												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														Data de Nacimento: {dataNasc(arrayCarts[k].dataNasc)}
+														Data de Nacimento: {dataNasc(dep.dataNasc)}
 												</Typography>
 											</Grid>
 										</Grid>
@@ -630,11 +633,12 @@ function MoldeCarteira(){
 
 											<Grid item  style={{padding:"2px"}}>
 												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														CPF: {arrayCarts[k].cpf}
+														CPF: {dep.cpf}
 												</Typography>
 											</Grid>
 										</Grid>
-
+										</>
+									  ))}
 
 									
 
@@ -668,8 +672,17 @@ const [filtro, setFiltro] = useState("");
 const [overflow, setOverflow] = useState("auto"); 
 const [exibeCarts, setExibeCarts] = useState(false); 
 
+const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const classesP = useStylesCarts();
 
@@ -761,12 +774,21 @@ const [exibeCarts, setExibeCarts] = useState(false);
 						  </TableRow>
 						</TableHead>
 						<TableBody>
-						  {rows2.map((row,index) => (
+						  {rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
 							<Row key={row.cpf} row={row} />
 						  ))}
 						</TableBody>
 					  </Table>
 					</TableContainer>
+					<TablePagination
+						rowsPerPageOptions={[5, 10, 25]}
+						component="div"
+						count={rows2.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onChangePage={handleChangePage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+						/>
               </Grid>
 
 
@@ -776,54 +798,9 @@ const [exibeCarts, setExibeCarts] = useState(false);
           </div>
 		  <AbrirModalChangeServer/>
 		 {arrayCarts.length > 0 &&
-			<div>
-				<br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-				<br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-				<br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/><br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-				<br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-				<br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
-			  <br/>
+			<div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 			  	<div ref={ref} id="divToPrint" width={1600} className={classesP.root}>
 					<MoldeCarteira/>
 				</div>		  

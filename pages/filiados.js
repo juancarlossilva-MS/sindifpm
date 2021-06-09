@@ -169,9 +169,6 @@ function createDataFili(nome,sname,cpf,rg,nomeMae,nomePai,numCart,dataNasc,dataA
  
 function ConfirmarDelete(){
 
-	console.log(cpfToDel);
-	console.log(user.email);
-	console.log(password);
 	fire.auth().signInWithEmailAndPassword(user.email, password)
 	  .then(async(e) => {
 			setRows([]);
@@ -327,13 +324,10 @@ function addArrayCarts(event){
   let fs = JSON.parse(event.target.value);
   if(cartsCheck[fs.cpf]){
     cartsCheck[fs.cpf] = false;
-    console.log(arrayCarts);
-    console.log(fs);
-    console.log(cartsCheck);
+    
     setArrayCarts(arrayCarts.filter(item => item.cpf !== fs.cpf));
   }else{
      cartsCheck[fs.cpf] = true;
-     console.log(cartsCheck);
      setArrayCarts(prev=>[...prev,fs]);
   }
 
@@ -344,7 +338,6 @@ function addArrayCarts(event){
 }
 
 function GerarCarteiras(){
-  console.log(arrayCarts);
   setExibe(true);
   setOverflow("hidden");
   setFiltro("blur(5px)");
@@ -367,7 +360,6 @@ function printDocument(){
 
 	for(let s=0;s< arrayCarts.length;s++){
 		const input = document.getElementById('divisor'+s);
-		console.log(input);
 		html2canvas(input,{scale:4, windowWidth:window.innerWidth,width:1600})
 		.then((canvas) => {
 			

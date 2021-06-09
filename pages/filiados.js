@@ -602,30 +602,11 @@ function MoldeCarteira(){
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														Parentesco: {dep.parentesco}
+												<Typography align="left" variant="body2" style={{fontSize: "0.8rem"}} color="">
+													Parentesco: {dep.parentesco} | Data de Nasc: {dataNasc(dep.dataNasc)}
 												</Typography>
-											</Grid>
-										</Grid>
-										<Grid container spacing={1}>
-											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														RG: {dep.rg}
-												</Typography>
-											</Grid>
-										</Grid>
-										<Grid container spacing={1}>
-											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														Data de Nacimento: {dataNasc(dep.dataNasc)}
-												</Typography>
-											</Grid>
-										</Grid>
-										<Grid container spacing={1}>
-
-											<Grid item  style={{padding:"2px"}}>
-												<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
-														CPF: {dep.cpf}
+												<Typography align="center" style={{fontSize: "0.68rem",marginTop:"-4%"}} variant="body2" color="">
+													_________________________________________________
 												</Typography>
 											</Grid>
 										</Grid>

@@ -338,13 +338,45 @@ function addArrayCarts(event){
 }
 
 function GerarCarteiras(){
-  setExibe(true);
-  setOverflow("hidden");
-  setFiltro("blur(5px)");
-  printDocument();
-  
+  //setExibe(true);
+  //setOverflow("hidden");
+ //setFiltro("blur(5px)");
+ // printDocument();
+ const input = document.getElementById('divisor0');
+ console.log(input);
+html2canvas(input,{scrollY:39,scale:4, windowWidth:window.innerWidth,width:1600})
+ .then((canvas) => {
+			 var myImage = canvas.toDataURL('image/jpeg',0.3);
+			console.log(myImage);
+			var pri = document.getElementById("ifmcontentstoprint").contentWindow;
+			pri.document.open();
+			pri.document.write("<img  style='width:200%' src='"+myImage+"''/>");
+		 //imprimir();
+  })
+
+}
+var popup = null;
+function closePrint(){
+	if(popup){
+		popup.close();
+	}
 }
 
+function imprimir(){
+	var pri = document.getElementById("ifmcontentstoprint").contentWindow;
+
+	pri.focus();
+			pri.print();
+			setArrayCarts([]);
+ 	
+}
+function taPronto(){
+
+				imprimir();
+
+	
+
+}
 
 async function GerarUmaCarteira(row){
 	
@@ -360,7 +392,8 @@ function printDocument(){
 
 	for(let s=0;s< arrayCarts.length;s++){
 		const input = document.getElementById('divisor'+s);
-		html2canvas(input,{scale:4, windowWidth:window.innerWidth,width:1600})
+		console.log(input);
+		html2canvas(input,{scrollY:0,scale:4, windowWidth:window.innerWidth,width:1600})
 		.then((canvas) => {
 			
 			const imgData = canvas.toDataURL('image/jpeg',0.3);
@@ -376,7 +409,7 @@ function printDocument(){
 				setExibe(false);
 				setOverflow("auto");
 				setFiltro("");
-				setArrayCarts([]);
+				//setArrayCarts([]);
 
 			}else{
 				pdf.addPage();
@@ -474,7 +507,7 @@ function MoldeCarteira(){
 		useEffect(() => {
 		GerarCarteiras()
 		setFlag(false);
-		setArrayCarts([]);
+
 	  }, []); // <-- empty array means 'run once'
 	}
 	
@@ -482,7 +515,7 @@ function MoldeCarteira(){
 	const row = [];
 	for(k=0;k<arrayCarts.length;k++){
 			row.push(
-				<Grid container id={"divisor"+k}>
+				<Grid container style={{position: "fixed"}} id={"divisor"+k}>
 											
 								<Grid item xs={3}  >
 									<Paper className={classes.paper} style={{maxHeight:"200px", maxWidth:"335px",minHeight:"200px", minWidth:"335px",height:"200px"}}>
@@ -671,8 +704,8 @@ const handleChangePage = (event, newPage) => {
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link>
+
 	  
-		
 		<Header/>
         <div style={{margin:"5% 0 0 5%"}}>
           <Grid container >  
@@ -768,18 +801,20 @@ const handleChangePage = (event, newPage) => {
 
           </Grid>
 		  <Button ref={refBC} onClick={GerarCarteiras}></Button>
+		  <Button  onClick={taPronto}>imprime</Button>
           </div>
 		  <AbrirModalChangeServer/>
-		 {arrayCarts.length > 0 &&
-			<div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-			  	<div ref={ref} id="divToPrint" width={1600} className={classesP.root}>
-					<MoldeCarteira/>
-				</div>		  
-			</div>		  
-		  }
+		  {arrayCarts.length > 0 &&
+			
+			
+				<MoldeCarteira/>
+			 
+			}
+		
+			<iframe id="ifmcontentstoprint" style={{height: "0px", width: "0px", position: "absolute"}}></iframe>
+
 		  
+		 
 		  </div>
   </div>);
 };

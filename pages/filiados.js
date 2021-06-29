@@ -337,6 +337,8 @@ function addArrayCarts(event){
 
 }
 
+
+
 function GerarCarteiras(){
   //setExibe(true);
   //setOverflow("hidden");
@@ -344,16 +346,17 @@ function GerarCarteiras(){
  // printDocument();
  const input = document.getElementById('divisor0');
  console.log(input);
-html2canvas(input,{scrollY:39,scale:4, windowWidth:window.innerWidth,width:1600})
+html2canvas(input,{scrollY:(29+(rowsPerPage*3)),scale:4, width:700,height:1000})
  .then((canvas) => {
 			 var myImage = canvas.toDataURL('image/jpeg',0.3);
-			console.log(myImage);
 			var pri = document.getElementById("ifmcontentstoprint").contentWindow;
 			pri.document.open();
-			pri.document.write("<img  style='width:200%' src='"+myImage+"''/>");
+			pri.document.write("<img  style='width:100%' src='"+myImage+"''/>");
+		
+			
 		 //imprimir();
   })
-
+pri.onload = imprimir();
 }
 var popup = null;
 function closePrint(){
@@ -679,10 +682,12 @@ const [overflow, setOverflow] = useState("auto");
 const [exibeCarts, setExibeCarts] = useState(false); 
 
 const handleChangePage = (event, newPage) => {
+	console.log("aqui")
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
+	  
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };

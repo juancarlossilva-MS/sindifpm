@@ -319,6 +319,7 @@ function Row(props) {
   
 const [arrayCarts, setArrayCarts] = React.useState([]);
 const [cartsCheck, setCartsCheck] = React.useState([]);
+const [imgsLoaded, setImgsLoaded] = React.useState('');
 function addArrayCarts(event){
    
   let fs = JSON.parse(event.target.value);
@@ -338,25 +339,63 @@ function addArrayCarts(event){
 }
 
 
+async function geraImages(){
+	let imgs = "";
+
+var pri = document.getElementById("ifmcontentstoprint").contentWindow;
+
+	
+	for(let s=0;s< arrayCarts.length;s++){
+	   const input = document.getElementById('divisor'+s); console.log(input);
+	   html2canvas(input,{scrollY:(29+(rowsPerPage*3)),scale:4, width:700,height:1000,
+	
+		}).then((canvas) => {
+				   var myImage = canvas.toDataURL('image/jpeg',0.3);
+				   pri.document.open();
+				   //const img = document.createElement("img");
+			   //	img.src = myImage;
+				   //img.style = "width:100%"
+				   //pri.document.appendChild("<img  style='width:100%' src='"+myImage+"''/>");
+   
+				   imgs = imgs+"<img  style='width:100%' src='"+myImage+"''/>";
+				   
+				   if((s+1) == arrayCarts.length){
+						pri.document.write(imgs);
+						setImgsLoaded(imgs);
+					}
+
+	   })
+   }
+   
+}
+
+
+useEffect(()=>{
+	var pri = document.getElementById("ifmcontentstoprint").contentWindow;
+
+	if(imgsLoaded != ""){
+			pri.focus();
+		pri.print();
+	}
+
+},[imgsLoaded])
 
 function GerarCarteiras(){
   //setExibe(true);
   //setOverflow("hidden");
  //setFiltro("blur(5px)");
  // printDocument();
- const input = document.getElementById('divisor0');
- console.log(input);
-html2canvas(input,{scrollY:(29+(rowsPerPage*3)),scale:4, width:700,height:1000})
- .then((canvas) => {
-			 var myImage = canvas.toDataURL('image/jpeg',0.3);
-			var pri = document.getElementById("ifmcontentstoprint").contentWindow;
-			pri.document.open();
-			pri.document.write("<img  style='width:100%' src='"+myImage+"''/>");
-		
-			
-		 //imprimir();
-  })
-pri.onload = imprimir();
+const result = geraImages();
+
+//
+
+ /* setTimeout(function(){
+
+	pri.focus();
+			pri.print();
+			setArrayCarts([]);
+
+  },1000);*/
 }
 var popup = null;
 function closePrint(){
@@ -373,13 +412,7 @@ function imprimir(){
 			setArrayCarts([]);
  	
 }
-function taPronto(){
 
-				imprimir();
-
-	
-
-}
 
 async function GerarUmaCarteira(row){
 	
@@ -387,6 +420,7 @@ async function GerarUmaCarteira(row){
      await setArrayCarts(prev=>[...prev,row])
 	 	
 }
+
 
 
 
@@ -806,7 +840,7 @@ const handleChangePage = (event, newPage) => {
 
           </Grid>
 		  <Button ref={refBC} onClick={GerarCarteiras}></Button>
-		  <Button  onClick={taPronto}>imprime</Button>
+		
           </div>
 		  <AbrirModalChangeServer/>
 		  {arrayCarts.length > 0 &&

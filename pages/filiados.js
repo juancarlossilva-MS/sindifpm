@@ -1,10 +1,10 @@
 import React, { useState, Component, useEffect } from 'react';
 import { withIronSession } from "next-iron-session";
 import { useRouter } from 'next/router';
-import {Avatar, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,Collapse,
+import {Backdrop, makeStyles, Modal, FormControl, FormLabel, Radio, RadioGroup,InputLabel,Collapse,
     AppBar,Toolbar,    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,
     IconButton,Icon, Button, CssBaseline, TextField, FormControlLabel, Checkbox ,Grid,Box, Typography,
-	CardContent, LinearProgress, ButtonBase, CardActionArea, Card
+	CardContent, CircularProgress, ButtonBase, CardActionArea, Card
 	} from '@material-ui/core';
 import {Label, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,6 +27,7 @@ const PrivatePage = ({ user }) => {
   const [urlAtual, setUrlAtual] = useState("");
   const [canal, setCanal] = useState("");
   const [open, setOpen] = React.useState(false);
+  const [openBD, setOpenBD] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -376,6 +377,8 @@ useEffect(()=>{
 	if(imgsLoaded != ""){
 			pri.focus();
 		pri.print();
+		setArrayCarts([]);
+		setOpenBD(false);
 	}
 
 },[imgsLoaded])
@@ -385,6 +388,7 @@ function GerarCarteiras(){
   //setOverflow("hidden");
  //setFiltro("blur(5px)");
  // printDocument();
+ setOpenBD(true);
 const result = geraImages();
 
 //
@@ -517,6 +521,10 @@ const useStylesCarts = makeStyles((theme) => ({
     display: 'block',
     maxWidth: '62%',
     maxHeight: '75%',
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
  
 }));
@@ -732,12 +740,7 @@ const handleChangePage = (event, newPage) => {
   const classesP = useStylesCarts();
 
     return(
-	<div style={{overflow:overflow }}>
-	{exibe &&
-		<LinearProgress style={{marginTop: "27%",marginBottom: "-33%"}}/>
-		
-	}
-	<div style={{filter:filtro }}>
+	<>
 	 
   
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"/>
@@ -852,10 +855,11 @@ const handleChangePage = (event, newPage) => {
 		
 			<iframe id="ifmcontentstoprint" style={{height: "0px", width: "0px", position: "absolute"}}></iframe>
 
-		  
+			<Backdrop className={classes.backdrop} open={openBD}>
+					<CircularProgress color="inherit" />
+			</Backdrop>
 		 
-		  </div>
-  </div>);
+		  </>);
 };
 
 

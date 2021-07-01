@@ -348,7 +348,7 @@ var pri = document.getElementById("ifmcontentstoprint").contentWindow;
 	
 	for(let s=0;s< arrayCarts.length;s++){
 	   const input = document.getElementById('divisor'+s); console.log(input);
-	   html2canvas(input,{scrollY:(29+(rowsPerPage*3)),scale:4, width:700,height:1000,
+	   html2canvas(input,{scrollY:(29+(rowsPerPage*3)),scale:4, width:700,height:800,
 	
 		}).then((canvas) => {
 				   var myImage = canvas.toDataURL('image/jpeg',0.3);
@@ -358,7 +358,7 @@ var pri = document.getElementById("ifmcontentstoprint").contentWindow;
 				   //img.style = "width:100%"
 				   //pri.document.appendChild("<img  style='width:100%' src='"+myImage+"''/>");
    
-				   imgs = imgs+"<img  style='width:100%' src='"+myImage+"''/>";
+				   imgs = imgs+"<img  style='width:106%' src='"+myImage+"''/>";
 				   
 				   if((s+1) == arrayCarts.length){
 						pri.document.write(imgs);
@@ -673,14 +673,14 @@ function MoldeCarteira(){
 									<>
 									<Grid container spacing={1}>
 										<Grid item  style={{padding:"2px"}}>
-											<Typography align="center" variant="body2" style={{fontSize: "0.8rem"}} color="">
+											<Typography align="center" variant="body2" style={{fontSize: "0.7rem"}} color="">
 													Nome: {dep.nomeComp}
 											</Typography>
 										</Grid>
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item  style={{padding:"2px"}}>
-												<Typography align="left" variant="body2" style={{fontSize: "0.8rem"}} color="">
+												<Typography align="left" variant="body2" style={{fontSize: "0.7rem"}} color="">
 													Parentesco: {dep.parentesco} | Data de Nasc: {dataNasc(dep.dataNasc)}
 												</Typography>
 												<Typography align="center" style={{fontSize: "0.68rem",marginTop:"-4%"}} variant="body2" color="">

@@ -36,6 +36,7 @@ const PrivatePage = ({ user }) => {
   const handleClose = () => {
     setOpen(false);
   };
+  
 useEffect(() => {
     fire.database()
       .ref('filiados').orderByChild("numCart")
@@ -55,6 +56,7 @@ useEffect(() => {
 						fili.numCart,fili.dataNasc,fili.dataAdm,fili.dataValid,fili.funcao,fili.dependentes);
 					 //console.log(res);
 				  setRows(prev=>[res,...prev]);
+				  setOriginal(prev=>[res,...prev]);
 				  
 				
 
@@ -107,6 +109,7 @@ useEffect(() => {
     
   }
 const [rows2, setRows] = useState([]);
+const [original, setOriginal] = useState([]);
 
   
 
@@ -734,6 +737,17 @@ const handleChangePage = (event, newPage) => {
     setPage(0);
   };
 
+function Procurar(e){
+	var valor = e.target.value;
+	console.log(valor)
+	const filteredRows = original.filter((row) => {
+
+		return ((row.nome+" "+row.sname)+row.cpf+row.rg+row.numCart+row.funcao).toLowerCase().includes(valor.toLowerCase());
+	  });
+	  setRows(filteredRows);
+	
+}
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -803,7 +817,9 @@ const handleChangePage = (event, newPage) => {
 
               <Grid item xs={10} style={{maxWidth:"100%"}}>
                 <TableContainer style={{backgroundColor:"unset"}} component={Paper}>
+					<TextField label="Digite aqui para procurar pelo Nome, Rg, Cpf, Número da Carteira ou Função"  onChange={(e)=>Procurar(e)} fullWidth/>
 					  <Table aria-label="collapsible table">
+						  
 						<TableHead>
 						  <TableRow>
 							<TableCell />

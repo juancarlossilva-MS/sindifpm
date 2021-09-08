@@ -75,6 +75,7 @@ useEffect(() => {
       const name = childSnapshot.key;
       const fili = childSnapshot.val();
        var date = (new Date(fili.dataNasc))
+       date.setDate(date.getDate() + 1);
 
       fili.dataNasc = date;
        if(date.getMonth() ==today.getMonth()){

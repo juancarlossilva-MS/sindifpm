@@ -354,6 +354,7 @@ var pri = document.getElementById("ifmcontentstoprint").contentWindow;
 	   html2canvas(input,{scrollY:(29+(rowsPerPage*3)),scale:4, width:700,height:800,
 	
 		}).then((canvas) => {
+					console.log("here!")
 				   var myImage = canvas.toDataURL('image/jpeg',0.3);
 				   pri.document.open();
 				   //const img = document.createElement("img");
